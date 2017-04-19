@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="artifactTaxi:war exploded">
+    <output-path>$PROJECT_DIR$/target/artifactTaxi</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="artifactTaxi" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.apache.tomcat:juli:6.0.26" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-jdbc:9.0.0.M19" />
+          <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-juli:9.0.0.M19" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/artifactTaxi/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="artifactTaxi/web/Web" />
+    </root>
+  </artifact>
+</component>
