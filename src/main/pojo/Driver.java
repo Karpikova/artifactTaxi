@@ -1,5 +1,13 @@
-package main.model.pojo;
+package main.pojo;
 
+import main.ConnectionToDB;
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 /**
@@ -22,8 +30,26 @@ public class Driver {
      *     {@link User }
      *
      */
+
     public User getUsersPkey() {
         return usersPkey_driver;
+    }
+
+    public Driver() {
+    }
+
+    public Driver(User usersPkey_driver) {
+        this.usersPkey_driver = usersPkey_driver;
+    }
+
+    public Driver(User usersPkey_driver, String fullName, String carNumber,
+                  String carDescription, String passport, Date birth) {
+        this.usersPkey_driver = usersPkey_driver;
+        this.fullName = fullName;
+        this.carNumber = carNumber;
+        this.carDescription = carDescription;
+        this.passport = passport;
+        this.birth = birth;
     }
 
     /**

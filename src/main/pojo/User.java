@@ -1,7 +1,12 @@
-package main.model.pojo;
+package main.pojo;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * User of BD
@@ -13,6 +18,23 @@ public class User {
     protected int userPassword;
     protected Date lastLogin;
     protected Date registrationDate;
+
+    public User(long usersPkey, String login) {
+        this.usersPkey = usersPkey;
+        this.login = login;
+    }
+
+    public User(long usersPkey) {
+        this.usersPkey = usersPkey;
+    }
+
+    public User(long usersPkey, String login, int userPassword, Date lastLogin, Date registrationDate) {
+        this.usersPkey = usersPkey;
+        this.login = login;
+        this.userPassword = userPassword;
+        this.lastLogin = lastLogin;
+        this.registrationDate = registrationDate;
+    }
 
     /**
      * Gets the value of the usersPkey property.

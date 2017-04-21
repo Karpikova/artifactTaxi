@@ -1,9 +1,9 @@
-package main.model.pojo;
+package main.pojo;
 
 import java.util.Date;
 
 /**
- * Trip: driver drives passenger
+ * Trip: a driver drives a passenger
  */
 public class Trip {
 
@@ -18,6 +18,31 @@ public class Trip {
     protected Status status;
     protected boolean estimate;
     protected String report;
+
+    public Trip(long trips_pkey, Driver driverPkey, Passenger passengerPkey, String addressFrom,
+                String addressTo, Date dateStart, Date dateChange, int price, Status status,
+                boolean estimate, String report) {
+        this.trips_pkey = trips_pkey;
+        this.driverPkey = driverPkey;
+        this.passengerPkey = passengerPkey;
+        this.addressFrom = addressFrom;
+        this.addressTo = addressTo;
+        this.dateStart = dateStart;
+        this.dateChange = dateChange;
+        this.price = price;
+        this.status = status;
+        this.estimate = estimate;
+        this.report = report;
+    }
+
+    public Trip(long trips_pkey, Driver driver, Passenger passenger, String addressFrom, String addressTo, int price) {
+        this.driverPkey = driver;
+        this.passengerPkey = passenger;
+        this.trips_pkey = trips_pkey;
+        this.price = price;
+        this.addressFrom = addressFrom;
+        this.addressTo = addressTo;
+    }
 
     /**
      * Gets the value of the tripsId property.
@@ -245,6 +270,9 @@ public class Trip {
      *
      */
     public String getReport() {
+        if (report == null)
+            return "";
+
         return report;
     }
 

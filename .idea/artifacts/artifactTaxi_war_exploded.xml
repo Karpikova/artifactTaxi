@@ -10,6 +10,12 @@
           <element id="library" level="project" name="Maven: org.apache.tomcat:juli:6.0.26" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-jdbc:9.0.0.M19" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-juli:9.0.0.M19" />
+          <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.0.0.jre7" />
+          <element id="library" level="project" name="Maven: javax:javaee-api:7.0" />
+          <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.5.0" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
         </element>
       </element>
       <element id="directory" name="META-INF">
