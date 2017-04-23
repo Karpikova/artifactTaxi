@@ -152,7 +152,7 @@ public class UserImplementation implements UserInterface {
      * @param registration_date
      * @return encoded password
      */
-    public int code_pas(String password, Date registration_date) {
+    public static int code_pas(String password, Date registration_date) {
         Calendar registration_date_calendar = new GregorianCalendar();
         registration_date_calendar.setTime(registration_date);
 

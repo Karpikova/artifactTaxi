@@ -48,13 +48,6 @@ public interface UserInterface {
      */
     public void getAll();
 
-    /**
-     * The method codes a password to int.
-     * @param password
-     * @param dateReg
-     * @return encoded password
-     */
-    public int code_pas(String password, Date dateReg);
 
     /**
      * Gets registration date
