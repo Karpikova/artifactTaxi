@@ -28,6 +28,11 @@ public class User {
         this.usersPkey = usersPkey;
     }
 
+    public User(String login, int userPassword) {
+        this.login = login;
+        this.userPassword = userPassword;
+    }
+
     public User(long usersPkey, String login, int userPassword, Date lastLogin, Date registrationDate) {
         this.usersPkey = usersPkey;
         this.login = login;

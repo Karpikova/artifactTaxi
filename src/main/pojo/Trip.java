@@ -35,14 +35,17 @@ public class Trip {
         this.report = report;
     }
 
-    public Trip(long trips_pkey, Driver driver, Passenger passenger, String addressFrom, String addressTo, int price) {
-        this.driverPkey = driver;
-        this.passengerPkey = passenger;
-        this.trips_pkey = trips_pkey;
-        this.price = price;
-        this.addressFrom = addressFrom;
-        this.addressTo = addressTo;
-    }
+//    public Trip(long trips_pkey, Driver driver, Passenger passenger, String addressFrom, String addressTo,
+//                int price, Status status, Date dateStart) {
+//        this.driverPkey = driver;
+//        this.passengerPkey = passenger;
+//        this.trips_pkey = trips_pkey;
+//        this.price = price;
+//        this.addressFrom = addressFrom;
+//        this.addressTo = addressTo;
+//        this.dateStart = dateStart;
+//        this.status = status;
+//    }
 
     /**
      * Gets the value of the tripsId property.
@@ -272,7 +275,6 @@ public class Trip {
     public String getReport() {
         if (report == null)
             return "";
-
         return report;
     }
 

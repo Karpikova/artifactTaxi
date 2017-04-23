@@ -17,24 +17,17 @@ import java.text.SimpleDateFormat;
 public class DriverImplementation implements DriverInterface {
 
     public void create(Driver driver) {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-            ConnectionToDB connectionToDB = new ConnectionToDB();
-            Connection connection = connectionToDB.toConnect();
-            Statement st = connection.createStatement();
-            st.executeQuery("INSERT INTO public.\"Driver\"(\n" +
-                    "(users_pkey_driver, full_name, car_number, car_description, passport, birth)" +
-                    "  VALUES (" +
-                    driver.getUsersPkey() +", " +
-                    driver.getFullName() + ", " +
-                    driver.getCarNumber() + ", " +
-                    driver.getCarDescription() + ", " +
-                    driver.getPassport() + ", " +
-                    format.format(driver.getBirth())
-            );
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        String qText = "INSERT INTO public.\"Driver\"(\n" +
+                "(users_pkey_driver, full_name, car_number, car_description, passport, birth)" +
+                "  VALUES (" +
+                driver.getUsersPkey() +", " +
+                driver.getFullName() + ", " +
+                driver.getCarNumber() + ", " +
+                driver.getCarDescription() + ", " +
+                driver.getPassport() + ", " +
+                format.format(driver.getBirth());
+        ConnectionToDB.executeQuery(qText);
     }
 
     public Driver read(int users_pkey_driver) {

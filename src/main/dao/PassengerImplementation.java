@@ -17,21 +17,14 @@ import java.text.SimpleDateFormat;
 public class PassengerImplementation implements PassengerInterface{
 
     public void create(Passenger passenger) {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-            ConnectionToDB connectionToDB = new ConnectionToDB();
-            Connection connection = connectionToDB.toConnect();
-            Statement st = connection.createStatement();
-            st.executeQuery("INSERT INTO public.\"Passenger\"(\n" +
-                    "(users_pkey_driver, full_name, birth)" +
-                    "  VALUES (" +
-                    passenger.getUsersPkey() +", " +
-                    passenger.getFullName() + ", " +
-                    format.format(passenger.getBirth())
-            );
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        String qText = "INSERT INTO public.\"Passenger\"(\n" +
+                "(users_pkey_driver, full_name, birth)" +
+                "  VALUES (" +
+                passenger.getUsersPkey() +", " +
+                passenger.getFullName() + ", " +
+                format.format(passenger.getBirth());
+        ConnectionToDB.executeQuery(qText);
     }
 
     public Passenger read(int users_pkey_pas) {

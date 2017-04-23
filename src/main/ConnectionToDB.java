@@ -14,7 +14,7 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import javax.xml.ws.WebServiceException;
 
-public class ConnectionToDB implements Closeable{
+public class ConnectionToDB{
 
     public static DataSource dataSource;
     private Connection connection;
@@ -74,20 +74,16 @@ public class ConnectionToDB implements Closeable{
         return connection;
     }
 
-    public void disConnect() {
+    public static void executeQuery(String qText){
         try {
-            connection.close();
+            ConnectionToDB connectionToDB = new ConnectionToDB();
+            Connection connection = connectionToDB.toConnect();
+            Statement st = connection.createStatement();
+            st.executeQuery(qText);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    public void close() throws WebServiceException {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

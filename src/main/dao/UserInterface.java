@@ -17,6 +17,12 @@ public interface UserInterface {
     public void create(User user);
 
     /**
+     * Create a new user in DB
+     * @param user
+     */
+    public User createBrandNew(User user);
+
+    /**
      * Read a user from DB by users_pkey_driver
      * @param usersPkey
      * @return

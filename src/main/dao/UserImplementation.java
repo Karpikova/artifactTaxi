@@ -7,7 +7,6 @@ import main.pojo.Passenger;
 import main.pojo.User;
 import main.pojo.UserRole;
 
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,23 +26,47 @@ import java.util.GregorianCalendar;
 public class UserImplementation implements UserInterface {
 
     public void create(User user) {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        String qText = "INSERT INTO public.\"User\"(\n" +
+                "  users_pkey, login, users_password, last_login, registration_date)\n" +
+                "  VALUES (" +
+                user.getUsersPkey() +", " +
+                user.getLogin() + ", " +
+                user.getUserPassword() + ", " +
+                user.getLastLogin() + ", " +
+                format.format( user.getRegistrationDate());
+        ConnectionToDB.executeQuery(qText);
+    }
+
+    public User createBrandNew(User user) {
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            Date curDate = new Date();
             ConnectionToDB connectionToDB = new ConnectionToDB();
             Connection connection = connectionToDB.toConnect();
             Statement st = connection.createStatement();
-            ResultSet resultSet = st.executeQuery("INSERT INTO public.\"User\"(\n" +
-                    "  users_pkey, login, users_password, last_login, registration_date)\n" +
+            String qText = "INSERT INTO public.\"User\"(\n" +
+                    "  login, users_password, last_login, registration_date)\n" +
                     "  VALUES (" +
-                            user.getUsersPkey() +", " +
-                            user.getLogin() + ", " +
-                            user.getUserPassword() + ", " +
-                            user.getLastLogin() + ", " +
-                            format.format( user.getRegistrationDate())
-                            );
+                    "'" + user.getLogin() + "', " +
+                    "'" + user.getUserPassword() + "', " +
+                    "'" + format.format(curDate) + "', " +
+                    "'" + format.format(curDate) + "'";
+
+            st.executeQuery(qText);
+
+            qText = "SELECT * " +
+                    " FROM " +
+                    "  public.\"User\"" +
+                    "WHERE \n" +
+                    "  \"User\".login = '" + user.getLogin() + "' LIMIT 1;";
+            ResultSet resultSet = st.executeQuery(qText);
+            resultSet.next();
+                user.setUsersPkey(resultSet.getInt("users_pkey"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return user;
     }
 
 

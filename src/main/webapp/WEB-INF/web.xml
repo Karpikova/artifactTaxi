@@ -16,6 +16,10 @@
     <servlet-name>DriverMainServlet</servlet-name>
     <servlet-class>main.controllers.DriverMainServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ReportServlet</servlet-name>
+    <servlet-class>main.controllers.ReportServlet</servlet-class>
+  </servlet>
   <filter>
     <filter-name>WhiteFilter</filter-name>
     <filter-class>main.controllers.filtres.WhiteList</filter-class>
@@ -40,5 +44,9 @@
   <servlet-mapping>
     <servlet-name>DriverMainServlet</servlet-name>
     <url-pattern>/driverMain</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReportServlet</servlet-name>
+    <url-pattern>/passengerMain/report</url-pattern>
   </servlet-mapping>
 </web-app>
