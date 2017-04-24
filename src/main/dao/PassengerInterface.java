@@ -1,5 +1,6 @@
 package main.dao;
 
+import main.Exception.TaxiException;
 import main.pojo.Driver;
 import main.pojo.Passenger;
 
@@ -12,7 +13,7 @@ public interface PassengerInterface {
      * Create a new passenger in DB
      * @param passenger
      */
-    public void create(Passenger passenger);
+    public void create(Passenger passenger) throws TaxiException;
 
     /**
      * Read a passenger from DB by users_pkey_driver
@@ -26,7 +27,7 @@ public interface PassengerInterface {
      * @param login
      * @return Passenger
      */
-    public Passenger read(String login);
+    public Passenger read(String login) throws TaxiException;
 
     /**
      * Update a passenger from DB

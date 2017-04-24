@@ -43,7 +43,7 @@ public class Driver {
     }
 
     public Driver(User usersPkey_driver, String fullName, String carNumber,
-                  String carDescription, String passport, Date birth) {
+                       String carDescription, String passport, Date birth) {
         this.usersPkey_driver = usersPkey_driver;
         this.fullName = fullName;
         this.carNumber = carNumber;

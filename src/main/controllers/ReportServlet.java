@@ -1,5 +1,6 @@
 package main.controllers;
 
+import main.Exception.TaxiException;
 import main.services.TripServiceImplementation;
 import main.services.TripServiceInterface;
 import org.apache.log4j.Logger;
@@ -29,7 +30,6 @@ public class ReportServlet extends HttpServlet {
     private static final org.apache.log4j.Logger logger = Logger.getLogger(ReportServlet.class);
     private static TripServiceInterface tripServiceInterface = new TripServiceImplementation();
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         getServletContext().getRequestDispatcher("/report.jsp")
@@ -38,7 +38,13 @@ public class ReportServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        tripServiceInterface.updateReport((Long) req.getSession().getAttribute("trips_pkey"), req.getParameter("mesage"));
-        resp.sendRedirect(req.getContextPath() + "/passengerMain");
+        try {
+            tripServiceInterface.updateReport((Long) req.getSession().getAttribute("trips_pkey"), req.getParameter("mesage"));
+            resp.sendRedirect(req.getContextPath() + "/passengerMain");
+        } catch (TaxiException e) {
+            logger.error(e);
+            TaxiException.redirect_to_error(e, req, resp);
+            return;
+        }
     }
 }

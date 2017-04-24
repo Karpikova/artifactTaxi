@@ -1,9 +1,12 @@
 package main.dao;
 
 import main.ConnectionToDB;
-import main.pojo.Driver;
+import main.Exception.TaxiException;
+import main.controllers.LoginServlet;
 import main.pojo.Passenger;
 import main.pojo.User;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,22 +19,28 @@ import java.text.SimpleDateFormat;
  */
 public class PassengerImplementation implements PassengerInterface{
 
-    public void create(Passenger passenger) {
+    static {
+        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
+                .getResource("log4j.properties"));
+    }
+    private static final org.apache.log4j.Logger logger = Logger.getLogger(PassengerImplementation.class);
+
+    public void create(Passenger passenger) throws TaxiException {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        String qText = "INSERT INTO public.\"Passenger\"(\n" +
-                "(users_pkey_driver, full_name, birth)" +
+        String qText = "INSERT INTO public.\"Passenger\"" +
+                "(users_pkey_pas, full_name, birth)" +
                 "  VALUES (" +
-                passenger.getUsersPkey() +", " +
-                passenger.getFullName() + ", " +
-                format.format(passenger.getBirth());
-        ConnectionToDB.executeQuery(qText);
+                Long.valueOf(passenger.getUsersPkey().getUsersPkey()) +", " +
+                "'" + passenger.getFullName() + "' , " +
+                "'" + format.format(passenger.getBirth()) + "')";
+        ConnectionToDB.execute(qText);
     }
 
     public Passenger read(int users_pkey_pas) {
         return null;
     }
 
-    public Passenger read(String login) {
+    public Passenger read(String login) throws TaxiException {
         Passenger passenger = null;
         try {
             ConnectionToDB connectionToDB = new ConnectionToDB();
@@ -48,7 +57,8 @@ public class PassengerImplementation implements PassengerInterface{
                 passenger.setFullName(resultSet.getString("full_name"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         }
         return passenger;
     }

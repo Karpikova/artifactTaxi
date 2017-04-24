@@ -12,6 +12,7 @@
 <head>
     <title>Login</title>
 </head>
+<c:if test="${success == true}"> Success! You can log in right now! </c:if>
 <form method="post">
     Login:
         <input type="text" name="login">
@@ -19,18 +20,21 @@
         <input type="text" name="password">
     <input type="submit" name="login" value="Log in">
 </form>
-<a href="${pageContext.request.contextPath}?toAuth=1">First time here, want to enjoy as a passenger</a><br>
-<a href="${pageContext.request.contextPath}?toAuth=2">First time here, want to enjoy as a driver</a><br><br><br>
+
+<c:if test="${success != true}">
+    <a href="${pageContext.request.contextPath}?toAuth=1">First time here, want to enjoy as a passenger</a><br>
+    <a href="${pageContext.request.contextPath}?toAuth=2">First time here, want to enjoy as a driver</a><br><br><br>
+</c:if>
 <form method="get">
     <c:if test="${param.toAuth != null}">
         Login:
-        <input type="text" name="login">
+        <input type="text" name="loginNew" required="required">
         Password:
-        <input type="text" name="password"><br><br>
+        <input type="text" name="passwordNew" required="required"><br><br>
         Your name:
             <input type="text" name="fullName" required="required">
         Your birthday:
-            <input type="date" name="birth"><br><br>
+            <input type="date" name="birth" required="required"><br><br>
     </c:if>
     <c:if test="${param.toAuth == 2}">
         Your car number:

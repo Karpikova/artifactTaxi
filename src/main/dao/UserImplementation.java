@@ -2,10 +2,14 @@ package main.dao;
 
 import main.ConnectionToDB;
 import main.Exception.ExceptionDBStructure;
+import main.Exception.TaxiException;
+import main.controllers.LoginServlet;
 import main.pojo.Driver;
 import main.pojo.Passenger;
 import main.pojo.User;
 import main.pojo.UserRole;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -25,7 +29,13 @@ import java.util.GregorianCalendar;
  */
 public class UserImplementation implements UserInterface {
 
-    public void create(User user) {
+    static {
+        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
+                .getResource("log4j.properties"));
+    }
+    private static final org.apache.log4j.Logger logger = Logger.getLogger(UserImplementation.class);
+
+    public void create(User user) throws TaxiException {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         String qText = "INSERT INTO public.\"User\"(\n" +
                 "  users_pkey, login, users_password, last_login, registration_date)\n" +
@@ -35,10 +45,10 @@ public class UserImplementation implements UserInterface {
                 user.getUserPassword() + ", " +
                 user.getLastLogin() + ", " +
                 format.format( user.getRegistrationDate());
-        ConnectionToDB.executeQuery(qText);
+        ConnectionToDB.execute(qText);
     }
 
-    public User createBrandNew(User user) {
+    public User createBrandNew(User user) throws TaxiException {
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
             Date curDate = new Date();
@@ -49,32 +59,31 @@ public class UserImplementation implements UserInterface {
                     "  login, users_password, last_login, registration_date)\n" +
                     "  VALUES (" +
                     "'" + user.getLogin() + "', " +
-                    "'" + user.getUserPassword() + "', " +
+                    "" + user.getUserPassword() + ", " +
                     "'" + format.format(curDate) + "', " +
-                    "'" + format.format(curDate) + "'";
-
-            st.executeQuery(qText);
-
+                    "'" + format.format(curDate) + "')";
+            st.execute(qText);
             qText = "SELECT * " +
                     " FROM " +
                     "  public.\"User\"" +
                     "WHERE \n" +
                     "  \"User\".login = '" + user.getLogin() + "' LIMIT 1;";
+
             ResultSet resultSet = st.executeQuery(qText);
             resultSet.next();
                 user.setUsersPkey(resultSet.getInt("users_pkey"));
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         }
         return user;
     }
-
 
     public User read(int usersPkey) {
         return null;
     }
 
-    public User read(String login, String userPasswordPre){
+    public User read(String login, String userPasswordPre) throws TaxiException {
         int userPassword = code_pas(userPasswordPre, getRegDate(login));
         User user = null;
 
@@ -98,7 +107,8 @@ public class UserImplementation implements UserInterface {
                         resultSet.getDate("registration_date"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         }
         return user;
     }
@@ -115,17 +125,18 @@ public class UserImplementation implements UserInterface {
 
     }
 
-    public Date getRegDate(String login) { //It's a fake
+    public Date getRegDate(String login) throws TaxiException { //It's a fake
         Date date = null;
         try {
             date = new SimpleDateFormat( "dd.MM.yyyy" ).parse( "28.12.2016" );
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         }
         return date;
     }
 
-    public UserRole getRole(String login) {
+    public UserRole getRole(String login) throws TaxiException {
         UserRole user = null;
         DriverInterface driverInterface = new DriverImplementation();
         Driver driver = driverInterface.read(login);
@@ -140,7 +151,7 @@ public class UserImplementation implements UserInterface {
         try {
             throw new ExceptionDBStructure("There exists login without role");
         } catch (ExceptionDBStructure exceptionDBStructure) {
-            exceptionDBStructure.printStackTrace();
+            logger.error(exceptionDBStructure);
         }
         return null;
     }
@@ -152,7 +163,7 @@ public class UserImplementation implements UserInterface {
      * @param registration_date
      * @return encoded password
      */
-    public static int code_pas(String password, Date registration_date) {
+    public static int code_pas(String password, Date registration_date) throws TaxiException {
         Calendar registration_date_calendar = new GregorianCalendar();
         registration_date_calendar.setTime(registration_date);
 
@@ -160,9 +171,9 @@ public class UserImplementation implements UserInterface {
         String file_name = "D:\\1.txt";
         try {
             secret_number = Integer.parseInt((new BufferedReader(new FileReader(file_name)).readLine()));
-
         } catch (IOException e) {
-
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         }
         int result = (1 + (registration_date_calendar.get(Calendar.MONTH)))
                 * (registration_date_calendar.get(Calendar.YEAR))

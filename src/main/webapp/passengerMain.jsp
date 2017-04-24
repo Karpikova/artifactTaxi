@@ -58,6 +58,7 @@
         <th>AddressFrom</th>
         <th>AddressTo</th>
         <th>Price</th>
+        <th>Status</th>
         <th>Report</th>
         <th></th>
     </tr>
@@ -76,8 +77,6 @@
     </c:forEach>
     </tbody>
 </table>
+<a href="${pageContext.request.contextPath}/driverMain?logout=1">Log out</a>
 </body>
-$(function() {
-$("#number").mask("999999");
-});
 </html>

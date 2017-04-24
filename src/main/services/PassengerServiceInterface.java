@@ -1,5 +1,6 @@
 package main.services;
 
+import main.Exception.TaxiException;
 import main.pojo.Passenger;
 
 /*
@@ -11,6 +12,12 @@ public interface PassengerServiceInterface {
      * @param login
      * @return Passenger
      */
-    public Passenger read(String login);
+    public Passenger read(String login) throws TaxiException;
+
+    /**
+     * Create a new Passenger in DB
+     * @param passenger
+     */
+    public void create(Passenger passenger) throws TaxiException;
 
 }

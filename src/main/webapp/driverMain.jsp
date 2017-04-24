@@ -62,6 +62,6 @@ You can take any order:</h2>
     </c:forEach>
     </tbody>
 </table>
-
+<a href="${pageContext.request.contextPath}/driverMain?logout=1">Log out</a>
 </body>
 </html>

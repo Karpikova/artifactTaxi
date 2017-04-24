@@ -1,5 +1,6 @@
 package main.pojo;
 
+import main.Exception.TaxiException;
 import main.dao.UserImplementation;
 import main.services.UserServiceImplementation;
 
@@ -24,7 +25,7 @@ public class User {
     protected Date lastLogin;
     protected Date registrationDate;
 
-    public User(String login, String userPassword) {
+    public User(String login, String userPassword) throws TaxiException {
         try {
             Date date = new SimpleDateFormat( "dd.MM.yyyy" ).parse( "28.12.2016" );
             this.login = login;

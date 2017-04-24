@@ -1,9 +1,12 @@
 package main.dao;
 
-import com.sun.org.apache.regexp.internal.RE;
 import main.ConnectionToDB;
+import main.Exception.TaxiException;
+import main.controllers.LoginServlet;
 import main.pojo.Driver;
 import main.pojo.User;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,25 +19,31 @@ import java.text.SimpleDateFormat;
  */
 public class DriverImplementation implements DriverInterface {
 
-    public void create(Driver driver) {
+    static {
+        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
+                .getResource("log4j.properties"));
+    }
+    private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverImplementation.class);
+
+    public void create(Driver driver) throws TaxiException {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        String qText = "INSERT INTO public.\"Driver\"(\n" +
+        String qText = "INSERT INTO public.\"Driver\"" +
                 "(users_pkey_driver, full_name, car_number, car_description, passport, birth)" +
                 "  VALUES (" +
-                driver.getUsersPkey() +", " +
-                driver.getFullName() + ", " +
-                driver.getCarNumber() + ", " +
-                driver.getCarDescription() + ", " +
-                driver.getPassport() + ", " +
-                format.format(driver.getBirth());
-        ConnectionToDB.executeQuery(qText);
+                Long.valueOf(driver.getUsersPkey().getUsersPkey()) +", " +
+                "'" + driver.getFullName() + "' , " +
+                "'" + driver.getCarNumber() + "' , " +
+                "'" + driver.getCarDescription() + "' , " +
+                "'" + driver.getPassport() + "' , " +
+                "'" + format.format(driver.getBirth()) +"')";
+        ConnectionToDB.execute(qText);
     }
 
     public Driver read(int users_pkey_driver) {
         return null;
     }
 
-    public Driver read(String login) {
+    public Driver read(String login) throws TaxiException {
         Driver driver = null;
         try {
             ConnectionToDB connectionToDB = new ConnectionToDB();
@@ -51,7 +60,8 @@ public class DriverImplementation implements DriverInterface {
                 driver.setFullName(resultSet.getString("full_name"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         }
         return driver;
     }

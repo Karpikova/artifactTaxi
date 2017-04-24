@@ -7,6 +7,8 @@
           <element id="module-output" name="artifactTaxi" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: junit:junit:4.11" />
+          <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.3" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:juli:6.0.26" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-jdbc:9.0.0.M19" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-juli:9.0.0.M19" />

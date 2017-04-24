@@ -9,6 +9,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import com.sun.xml.internal.ws.Closeable;
+import main.Exception.TaxiException;
+import main.controllers.LoginServlet;
+import main.dao.DriverImplementation;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
@@ -47,7 +52,13 @@ public class ConnectionToDB{
         dataSource.setPoolProperties(p);
     }
 
-    public Connection toConnect() {
+    static {
+        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
+                .getResource("log4j.properties"));
+    }
+    private static final org.apache.log4j.Logger logger = Logger.getLogger(ConnectionToDB.class);
+
+    public Connection toConnect() throws TaxiException {
         try {
             Future<Connection> future = dataSource.getConnectionAsync();
             int numb_of_try = 0;
@@ -65,23 +76,27 @@ public class ConnectionToDB{
             }
             connection = future.get();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         }
         return connection;
     }
 
-    public static void executeQuery(String qText){
+    public static void execute(String qText) throws TaxiException {
         try {
             ConnectionToDB connectionToDB = new ConnectionToDB();
             Connection connection = connectionToDB.toConnect();
             Statement st = connection.createStatement();
-            st.executeQuery(qText);
+            st.execute(qText);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new TaxiException(e.getMessage());
         }
     }
 

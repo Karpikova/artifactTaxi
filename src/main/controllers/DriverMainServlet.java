@@ -1,5 +1,6 @@
 package main.controllers;
 
+import main.Exception.TaxiException;
 import main.pojo.Status;
 import main.pojo.Trip;
 import main.services.DriverServiceImplementation;
@@ -33,29 +34,38 @@ public class DriverMainServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String takeInWork = req.getParameter("trips_pkey");
-        List<Trip> allTrips = null;
-        String login = (String) req.getSession().getAttribute("userLogin");
-        long driver_id = driverServiceInterface.read(login).getUsersPkey().getUsersPkey();
-        if (takeInWork != null)
-        {
-            tripServiceInterface.appointADriver(Integer.valueOf(takeInWork), driver_id, Status.Appointed);
+        if (req.getParameter("logout")!=null){
+            req.getSession().setAttribute("userLogin", null);
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
-        getAllNewOrders(req, resp);
-        getMyOrders(req, resp, driver_id);
+        String takeInWork = req.getParameter("trips_pkey");
+        String login = (String) req.getSession().getAttribute("userLogin");
+        try {
+            long driver_id = driverServiceInterface.read(login).getUsersPkey().getUsersPkey();
+            if (takeInWork != null)
+            {
+                tripServiceInterface.appointADriver(Integer.valueOf(takeInWork), driver_id, Status.Appointed);
+            }
+            getAllNewOrders(req, resp);
+            getMyOrders(req, resp, driver_id);
+        } catch (TaxiException e) {
+            logger.error(e);
+            TaxiException.redirect_to_error(e, req, resp);
+            return;
+        }
 
         getServletContext().getRequestDispatcher("/driverMain.jsp")
                 .forward(req, resp);
     }
 
-    private void getAllNewOrders(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void getAllNewOrders(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, TaxiException {
         List<Trip> allTrips;
         allTrips = tripServiceInterface.readList(Status.Created);
 
         req.setAttribute("allTrips", allTrips);
     }
 
-    private void getMyOrders(HttpServletRequest req, HttpServletResponse resp, long driver_id) throws ServletException, IOException {
+    private void getMyOrders(HttpServletRequest req, HttpServletResponse resp, long driver_id) throws ServletException, IOException, TaxiException {
         List<Trip> myTrips;
         myTrips = tripServiceInterface.readList(driver_id);
 

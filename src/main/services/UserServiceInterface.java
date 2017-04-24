@@ -1,5 +1,7 @@
 package main.services;
 
+import main.Exception.ExceptionDBStructure;
+import main.Exception.TaxiException;
 import main.pojo.User;
 import main.pojo.UserRole;
 
@@ -15,20 +17,20 @@ public interface UserServiceInterface {
      * @param password
      * @return User
      */
-    public User auth(String login, String password);
+    public User auth(String login, String password) throws TaxiException;
 
     /**
      * Creates User in DB
      * @return User
      */
-    public User createBrandNew(User user);
+    public User createBrandNew(User user) throws TaxiException;
 
     /**
      * Gets User role
      * @param login
      * @return UserRole
      */
-    public UserRole getRole(String login);
+    public UserRole getRole(String login) throws TaxiException;
 
 
 }
