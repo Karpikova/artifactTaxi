@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 
@@ -30,7 +31,6 @@ public class DriverMainServlet extends HttpServlet {
                 .getResource("log4j.properties"));
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverMainServlet.class);
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

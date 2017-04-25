@@ -57,6 +57,11 @@ public class LoginServlet extends HttpServlet {
             try {
                 user = new User(login, password);
                 user = userService.createBrandNew(user);
+                if (user == null) {
+                    Exception ex = new ExceptionDBStructure("User like this already exsists");
+                    TaxiException.redirect_to_error(ex, req, resp);
+                    return;
+                }
                 req.setAttribute("success", true);
                 if (req.getParameter("carNumber")!=null) { //it's a driver
                     Driver driver = new Driver(user, fullName, carNumber, carDescription, passport, birth);

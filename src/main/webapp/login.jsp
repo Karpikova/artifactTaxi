@@ -30,7 +30,7 @@
         Login:
         <input type="text" name="loginNew" required="required">
         Password:
-        <input type="text" name="passwordNew" required="required"><br><br>
+        <input type="text" name="passwordNew" pattern="[a-zA-Z0-9\d]{8,100}" title="Not less 8 letters, please" required="required"><br><br>
         Your name:
             <input type="text" name="fullName" required="required">
         Your birthday:

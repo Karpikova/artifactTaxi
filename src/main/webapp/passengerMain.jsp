@@ -17,13 +17,13 @@
 <h3>Create a new order:</h3>
 <form method="post">
     <p>From:
-        <input type="text" size="36" name="from">
+        <input type="text" size="36" name="from" required="required">
     </p>
     <p>To:
-        <input type="text" size="39" name="to">
+        <input type="text" size="39" name="to" required="required">
     </p>
     <p>You are ready to pay:
-        <input type="number" size="19" name="price">
+        <input type="text" size="19" pattern="[0-9]*" title="Only numbers, please" name="price" required="required">
     </p>
     <input type="submit" name="Order" value="Send" />
 </form>

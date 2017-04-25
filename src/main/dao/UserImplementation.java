@@ -50,11 +50,23 @@ public class UserImplementation implements UserInterface {
 
     public User createBrandNew(User user) throws TaxiException {
         try {
-            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-            Date curDate = new Date();
+
             ConnectionToDB connectionToDB = new ConnectionToDB();
             Connection connection = connectionToDB.toConnect();
+            String qTextEx = "SELECT * " +
+                    " FROM " +
+                    "  public.\"User\"" +
+                    "WHERE \n" +
+                    "  \"User\".login = '" + user.getLogin() + "' LIMIT 1;";
             Statement st = connection.createStatement();
+            ResultSet resultSet = st.executeQuery(qTextEx);
+            if (resultSet.next()) {
+                return null;
+            };
+
+
+            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+            Date curDate = new Date();
             String qText = "INSERT INTO public.\"User\"(\n" +
                     "  login, users_password, last_login, registration_date)\n" +
                     "  VALUES (" +
@@ -62,14 +74,9 @@ public class UserImplementation implements UserInterface {
                     "" + user.getUserPassword() + ", " +
                     "'" + format.format(curDate) + "', " +
                     "'" + format.format(curDate) + "')";
-            st.execute(qText);
-            qText = "SELECT * " +
-                    " FROM " +
-                    "  public.\"User\"" +
-                    "WHERE \n" +
-                    "  \"User\".login = '" + user.getLogin() + "' LIMIT 1;";
+            st.executeUpdate(qText);
 
-            ResultSet resultSet = st.executeQuery(qText);
+            resultSet = st.executeQuery(qTextEx);
             resultSet.next();
                 user.setUsersPkey(resultSet.getInt("users_pkey"));
         } catch (SQLException e) {
@@ -187,5 +194,10 @@ public class UserImplementation implements UserInterface {
             result = result * (int) symbol;
         }
         return result;
+    }
+
+    public static void main(String args[]){
+        Number n = new Integer(1);
+        int y = (n.intValue());
     }
 }
