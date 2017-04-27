@@ -4,12 +4,14 @@ import main.Exception.ExceptionDBStructure;
 import main.Exception.TaxiException;
 import main.pojo.User;
 import main.pojo.UserRole;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
 /*
  * User Interface
  */
+
 public interface UserInterface {
 
     /**

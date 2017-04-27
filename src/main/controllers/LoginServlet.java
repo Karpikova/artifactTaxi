@@ -9,7 +9,11 @@ import main.pojo.UserRole;
 import main.services.*;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,17 +26,29 @@ import java.util.Date;;
 /*
  * Servlet for login page
  */
+//@Service
 public class LoginServlet extends HttpServlet {
 
-    private static UserServiceInterface userService = new UserServiceImplementation();
-    private static DriverServiceInterface driverService = new DriverServiceImplementation();
-    private static PassengerServiceInterface passengerService = new PassengerServiceImplementation();
+    @Autowired
+    private UserServiceInterface userService; //= new UserServiceImplementation();
+    @Autowired
+    private DriverServiceInterface driverService;// = new DriverServiceImplementation();
+    @Autowired
+    private PassengerServiceInterface passengerService;// = new PassengerServiceImplementation();
 
     static {
         PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
                 .getResource("log4j.properties"));
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(LoginServlet.class);
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.
+                processInjectionBasedOnServletContext(this,
+                        config.getServletContext());
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

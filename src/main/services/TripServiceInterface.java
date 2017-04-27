@@ -4,6 +4,7 @@ package main.services;
 import main.Exception.TaxiException;
 import main.pojo.Status;
 import main.pojo.Trip;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

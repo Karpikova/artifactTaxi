@@ -1,8 +1,6 @@
 package main.services;
 
-import main.Exception.ExceptionDBStructure;
 import main.Exception.TaxiException;
-import main.controllers.DriverMainServlet;
 import main.controllers.LoginServlet;
 import main.dao.UserImplementation;
 import main.dao.UserInterface;
@@ -10,13 +8,17 @@ import main.pojo.User;
 import main.pojo.UserRole;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-
-import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 /*
  * User Service Implementation
  */
+@Service
 public class UserServiceImplementation implements UserServiceInterface {
 
     static {
@@ -25,10 +27,16 @@ public class UserServiceImplementation implements UserServiceInterface {
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(UserServiceImplementation.class);
 
+    @Autowired
+    private UserInterface userInterface;// = new UserImplementation();
 
-    private static UserInterface userInterface = new UserImplementation();
+    //@Autowired //и так работает
+    //public void setUserInterface(UserInterface userInterface) {
+    //    this.userInterface = userInterface;
+    //}
 
     public User auth(String login, String password) throws TaxiException {
+        logger.info(userInterface);
         return userInterface.read(login, password);
     }
 

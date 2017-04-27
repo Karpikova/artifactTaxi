@@ -7,6 +7,7 @@ import main.pojo.Passenger;
 import main.pojo.User;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 /*
  * Implemntation of UserInterface for postgressql DB
  */
+@Repository
 public class PassengerImplementation implements PassengerInterface{
 
     static {

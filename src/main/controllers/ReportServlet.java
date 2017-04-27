@@ -5,7 +5,11 @@ import main.services.TripServiceImplementation;
 import main.services.TripServiceInterface;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +25,7 @@ import java.io.IOException;
  * 
  * Karpikova
  */
+//@Repository
 public class ReportServlet extends HttpServlet {
 
     static {
@@ -28,7 +33,16 @@ public class ReportServlet extends HttpServlet {
                 .getResource("log4j.properties"));
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(ReportServlet.class);
-    private static TripServiceInterface tripServiceInterface = new TripServiceImplementation();
+    @Autowired
+    private TripServiceInterface tripServiceInterface;// = new TripServiceImplementation();
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.
+                processInjectionBasedOnServletContext(this,
+                        config.getServletContext());
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

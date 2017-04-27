@@ -6,6 +6,7 @@ import main.controllers.LoginServlet;
 import main.pojo.*;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import java.util.List;
 /*
  * Implementation of UserInterface for postgressql DB
  */
+@Repository
 public class TripImplementation implements TripInterface {
 
     static {

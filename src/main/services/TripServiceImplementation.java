@@ -9,12 +9,17 @@ import main.pojo.Status;
 import main.pojo.Trip;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /*
  * Trip Service Implementation
  */
+@Service
 public class TripServiceImplementation implements TripServiceInterface{
 
     static {
@@ -23,8 +28,8 @@ public class TripServiceImplementation implements TripServiceInterface{
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(TripServiceImplementation.class);
 
-
-    public static TripInterface tripInterface = new TripImplementation();
+    @Autowired
+    private TripInterface tripInterface;// = new TripImplementation();
 
     public List<Trip> readList(Status status) throws TaxiException {
         return tripInterface.readList(status);

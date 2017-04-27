@@ -8,10 +8,13 @@ import main.dao.PassengerImplementation;
 import main.pojo.Driver;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /*
  * Driver Service Interface Implementation
  */
+@Repository
 public class DriverServiceImplementation implements DriverServiceInterface {
 
     static {
@@ -20,7 +23,8 @@ public class DriverServiceImplementation implements DriverServiceInterface {
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverServiceImplementation.class);
 
-    private static DriverInterface driverInterface = new DriverImplementation();
+    @Autowired
+    private DriverInterface driverInterface;// = new DriverImplementation();
 
     public Driver getDriver(String login) throws TaxiException {
         return driverInterface.read(login);

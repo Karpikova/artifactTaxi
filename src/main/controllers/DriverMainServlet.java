@@ -9,6 +9,7 @@ import main.services.TripServiceImplementation;
 import main.services.TripServiceInterface;
 import org.apache.log4j.PropertyConfigurator;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,20 +18,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 /*
  * Servler for driver main page
  */
-public class DriverMainServlet extends HttpServlet {
 
-    private static TripServiceInterface tripServiceInterface = new TripServiceImplementation();
-    private static DriverServiceInterface driverServiceInterface = new DriverServiceImplementation();
+public class DriverMainServlet extends HttpServlet {
 
     static {
         PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
                 .getResource("log4j.properties"));
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverMainServlet.class);
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.
+                processInjectionBasedOnServletContext(this,
+                        config.getServletContext());
+    }
+
+    @Autowired
+    private TripServiceInterface tripServiceInterface;// = new TripServiceImplementation();
+    @Autowired
+    private DriverServiceInterface driverServiceInterface;// = new DriverServiceImplementation();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

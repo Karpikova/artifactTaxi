@@ -3,6 +3,7 @@ package main.services;
 import main.Exception.TaxiException;
 import main.pojo.Driver;
 import main.pojo.Passenger;
+import org.springframework.stereotype.Repository;
 
 /*
  * Driver Service Interface

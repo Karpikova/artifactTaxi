@@ -1,12 +1,9 @@
 package main.controllers.test;
 
+import main.beans.Profiling;
 import org.junit.Test;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /*
  * Unit tests for DriverMainServlet
@@ -17,6 +14,7 @@ public class DriverMainServletTest {
     public void globalTest() throws SQLException {
 
     }
+
 
 //    @BeforeAll
 //    public static void init(){

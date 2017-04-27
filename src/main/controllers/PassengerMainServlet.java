@@ -6,7 +6,11 @@ import main.pojo.Trip;
 import main.services.*;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +21,13 @@ import java.util.List;
 /*
  * Servler for passenger main page
  */
+@Service
 public class PassengerMainServlet extends HttpServlet{
-    private static TripServiceInterface tripServiceInterface = new TripServiceImplementation();
-    private static PassengerServiceInterface passegerServiceInterface = new PassengerServiceImplementation();
+
+    @Autowired
+    private TripServiceInterface tripServiceInterface;// = new TripServiceImplementation();
+    @Autowired
+    private PassengerServiceInterface passegerServiceInterface ;//= new PassengerServiceImplementation();
 
     static {
         PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
@@ -27,6 +35,13 @@ public class PassengerMainServlet extends HttpServlet{
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverMainServlet.class);
 
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.
+                processInjectionBasedOnServletContext(this,
+                        config.getServletContext());
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
