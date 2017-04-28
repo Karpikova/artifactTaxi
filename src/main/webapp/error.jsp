@@ -11,8 +11,8 @@
     <title>error</title>
 </head>
 <body>
-    <% String message = (String) request.getAttribute("message");%>
+    <%--<% String message = (String) request.getAttribute("message");%>--%>
     We are sorry, we screwed up. If you wanna know what happened, we can tell you: <br>
-    <%=message%>
+    ${message}
 </body>
 </html>

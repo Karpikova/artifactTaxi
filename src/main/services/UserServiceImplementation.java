@@ -30,11 +30,6 @@ public class UserServiceImplementation implements UserServiceInterface {
     @Autowired
     private UserInterface userInterface;// = new UserImplementation();
 
-    //@Autowired //и так работает
-    //public void setUserInterface(UserInterface userInterface) {
-    //    this.userInterface = userInterface;
-    //}
-
     public User auth(String login, String password) throws TaxiException {
         logger.info(userInterface);
         return userInterface.read(login, password);

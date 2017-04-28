@@ -18,7 +18,7 @@
         <input type="text" name="login">
     Password:
         <input type="text" name="password">
-    <input type="submit" name="login" value="Log in">
+    <input type="submit" name="login_button" value="Log in">
 </form>
 
 <c:if test="${success != true}">
