@@ -21,10 +21,6 @@ import java.text.SimpleDateFormat;
 @Repository
 public class PassengerImplementation implements PassengerInterface{
 
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(PassengerImplementation.class);
 
     public void create(Passenger passenger) throws TaxiException {

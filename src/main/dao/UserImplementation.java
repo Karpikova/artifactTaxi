@@ -33,10 +33,6 @@ import java.util.GregorianCalendar;
 @Profiling
 public class UserImplementation implements UserInterface {
 
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(UserImplementation.class);
 
     public void create(User user) throws TaxiException {

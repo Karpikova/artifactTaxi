@@ -11,8 +11,8 @@
     <title>report</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/passengerMain/report" method="post">
-    <textarea name="mesage" rows="4" cols="55" wrap="virtual">Не то чтобы нам было важно ваше мнение о поездке, но вы можете его оставить тут, мы ознакомимся.</textarea>
+<form action="${pageContext.request.contextPath}/report?trips_pkey=${trips_pkey}" method="post">
+    <textarea name="message" rows="4" cols="55" wrap="virtual">Не то чтобы нам было важно ваше мнение о поездке, но вы можете его оставить тут, мы ознакомимся.</textarea>
     <input type="submit" name="send" value="Share your opinion" />
 </form>
 </body>

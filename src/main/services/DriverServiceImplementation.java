@@ -17,10 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DriverServiceImplementation implements DriverServiceInterface {
 
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverServiceImplementation.class);
 
     @Autowired

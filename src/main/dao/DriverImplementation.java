@@ -21,12 +21,6 @@ import java.text.SimpleDateFormat;
 @Repository
 public class DriverImplementation implements DriverInterface {
 
-    private static final String QUERY = "SELECT";
-
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverImplementation.class);
 
     public void create(Driver driver) throws TaxiException {

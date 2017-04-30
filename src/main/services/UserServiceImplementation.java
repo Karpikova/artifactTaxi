@@ -21,10 +21,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImplementation implements UserServiceInterface {
 
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(UserServiceImplementation.class);
 
     @Autowired

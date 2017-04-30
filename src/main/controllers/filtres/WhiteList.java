@@ -24,7 +24,7 @@ public class WhiteList implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
         String userLogin = (String) ((HttpServletRequest) servletRequest)
                 .getSession().getAttribute("userLogin");
-        if (userLogin != null) {
+        if (userLogin != "") {
             filterChain.doFilter(servletRequest, servletResponse); //это значит он прошел фильтр и продолжает работу?
         } else {
             ((HttpServletResponse) servletResponse)

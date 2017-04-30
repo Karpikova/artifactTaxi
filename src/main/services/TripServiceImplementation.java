@@ -1,17 +1,13 @@
 package main.services;
 
 import main.Exception.TaxiException;
-import main.controllers.DriverMainServlet;
 import main.controllers.LoginServlet;
-import main.dao.TripImplementation;
 import main.dao.TripInterface;
 import main.pojo.Status;
 import main.pojo.Trip;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +18,6 @@ import java.util.List;
 @Service
 public class TripServiceImplementation implements TripServiceInterface{
 
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(TripServiceImplementation.class);
 
     @Autowired

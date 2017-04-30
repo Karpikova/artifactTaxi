@@ -23,11 +23,6 @@ import java.util.List;
 @Repository
 public class TripImplementation implements TripInterface {
 
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
-
     private static final org.apache.log4j.Logger logger = Logger.getLogger(TripImplementation.class);
 
     public  void create(Trip trip) throws TaxiException {
@@ -91,13 +86,13 @@ public class TripImplementation implements TripInterface {
 
     public List<Trip> readList(Status status) throws TaxiException {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
-                "status = '" + status.value() + "' ORDER BY date_start";
+                "status = '" + status.value() + "' ORDER BY date_start, trips_pkey";
         return readList(qtext);
     }
 
     public List<Trip> readList(long driver_pkey) throws TaxiException {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
-                "driver_pkey = '" + driver_pkey + "' ORDER BY date_start";
+                "driver_pkey = '" + driver_pkey + "' ORDER BY date_start, trips_pkey";
         return readList(qtext);
     }
 
@@ -105,7 +100,7 @@ public class TripImplementation implements TripInterface {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
                 "passenger_pkey = " + passenger_pkey + "" +
                 " AND status = '" + status.value() + "'" +
-                " ORDER BY date_start";
+                " ORDER BY date_start, trips_pkey";
         return readList(qtext);
     }
 
@@ -113,7 +108,7 @@ public class TripImplementation implements TripInterface {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
                 "passenger_pkey = " + passenger_pkey + "" +
                 " AND status <> '" + status.value() + "'" +
-                " ORDER BY date_start";
+                " ORDER BY date_start, trips_pkey";
         return readList(qtext);
     }
 

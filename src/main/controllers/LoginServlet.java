@@ -2,6 +2,7 @@ package main.controllers;
 
 import main.Exception.ExceptionDBStructure;
 import main.Exception.TaxiException;
+import main.beans.Profiling;
 import main.pojo.Driver;
 import main.pojo.Passenger;
 import main.pojo.User;
@@ -26,7 +27,7 @@ import java.util.Date;;
 /*
  * Servlet for login page
  */
-//@Service
+@Profiling
 public class LoginServlet extends HttpServlet {
 
     @Autowired
@@ -36,10 +37,6 @@ public class LoginServlet extends HttpServlet {
     @Autowired
     private PassengerServiceInterface passengerService;// = new PassengerServiceImplementation();
 
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(LoginServlet.class);
 
     @Override
