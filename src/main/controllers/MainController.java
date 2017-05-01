@@ -1,6 +1,5 @@
 package main.controllers;
 
-import main.Exception.ExceptionDBStructure;
 import main.Exception.TaxiException;
 import main.pojo.Driver;
 import main.pojo.Passenger;
@@ -10,8 +9,12 @@ import main.services.DriverServiceInterface;
 import main.services.PassengerServiceInterface;
 import main.services.UserServiceInterface;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,6 +41,7 @@ public class MainController {
     private DriverServiceInterface driverService;// = new DriverServiceImplementation();
     @Autowired
     private PassengerServiceInterface passengerService;// = new PassengerServiceImplementation();
+    private static AuthenticationManager am = new TaxiAuthenticationManager();
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView sayHello(@RequestParam(value = "fullName", required = false) String fullName,
@@ -85,6 +89,7 @@ public class MainController {
             }
         }
         mav.setViewName("login");
+
         return mav;
     }
 
@@ -119,6 +124,20 @@ public class MainController {
         }
         logger.info(mav.getViewName());
         mav.addObject("loginSession", login);
+
+        try {
+            Authentication request = new UsernamePasswordAuthenticationToken(login, password);
+            Authentication result = am.authenticate(request);
+            SecurityContextHolder.getContext().setAuthentication(result);
+            logger.info("555555555555555"+SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        } catch(AuthenticationException e) {
+            logger.error(e);
+            mav.getModelMap().addAttribute("message", e.getMessage());
+            mav.setViewName("redirect:error");
+            return mav;
+        }
+
         return mav;
     }
+
 }

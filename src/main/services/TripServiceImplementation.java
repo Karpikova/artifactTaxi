@@ -1,12 +1,10 @@
 package main.services;
 
 import main.Exception.TaxiException;
-import main.controllers.LoginServlet;
 import main.dao.TripInterface;
 import main.pojo.Status;
 import main.pojo.Trip;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

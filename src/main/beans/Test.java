@@ -14,7 +14,21 @@ import java.util.TreeSet;
  */
 public class Test {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
+            A a = new B();
+            a.m(1);
           }
 }
 
+class A {
+    public void m(int
+                          n) {
+        System.out.println("class A, method m : " + n);
+    }
+}
+
+class B extends A {
+    public void m(byte n) {
+        System.out.println("class B, method m : ");
+    }
+}

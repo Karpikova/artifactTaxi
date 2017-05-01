@@ -2,13 +2,9 @@ package main.services;
 
 
 import main.Exception.TaxiException;
-import main.controllers.LoginServlet;
-import main.dao.PassengerImplementation;
 import main.dao.PassengerInterface;
-import main.dao.UserImplementation;
 import main.pojo.Passenger;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

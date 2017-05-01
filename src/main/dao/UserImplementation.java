@@ -4,13 +4,11 @@ import main.ConnectionToDB;
 import main.Exception.ExceptionDBStructure;
 import main.Exception.TaxiException;
 import main.beans.Profiling;
-import main.controllers.LoginServlet;
 import main.pojo.Driver;
 import main.pojo.Passenger;
 import main.pojo.User;
 import main.pojo.UserRole;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;

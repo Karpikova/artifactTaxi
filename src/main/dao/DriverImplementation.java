@@ -2,11 +2,9 @@ package main.dao;
 
 import main.ConnectionToDB;
 import main.Exception.TaxiException;
-import main.controllers.LoginServlet;
 import main.pojo.Driver;
 import main.pojo.User;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;

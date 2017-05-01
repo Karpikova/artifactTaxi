@@ -1,6 +1,5 @@
 package main.beans;
 
-import main.controllers.LoginServlet;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.BeansException;
@@ -25,7 +24,7 @@ public class ProfilingBeanHandler implements BeanPostProcessor{
     private Map<String, Class> map = new HashMap<String, Class>();
 
     static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
+        PropertyConfigurator.configure(ProfilingBeanHandler.class.getClassLoader()
                 .getResource("log4j.properties"));
     }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(ProfilingBeanHandler.class);
@@ -47,11 +46,10 @@ public class ProfilingBeanHandler implements BeanPostProcessor{
                     beanClass.getInterfaces(),
                     new InvocationHandler() {
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                            System.out.println("start");
                             long before = System.nanoTime();
-                            Object ob = method.invoke(proxy, args);
+                            Object ob = method.invoke(bean, args); //why bean&&&
                             long after = System.nanoTime();
-                            System.out.println("done");
+                            System.out.println(after-before);
                             return ob;
                         }
                     });

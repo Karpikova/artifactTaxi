@@ -1,23 +1,16 @@
 package main;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import com.sun.xml.internal.ws.Closeable;
 import main.Exception.TaxiException;
-import main.controllers.LoginServlet;
-import main.dao.DriverImplementation;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-
-import javax.xml.ws.WebServiceException;
 
 public class ConnectionToDB{
 
@@ -52,10 +45,6 @@ public class ConnectionToDB{
         dataSource.setPoolProperties(p);
     }
 
-    static {
-        PropertyConfigurator.configure(LoginServlet.class.getClassLoader()
-                .getResource("log4j.properties"));
-    }
     private static final org.apache.log4j.Logger logger = Logger.getLogger(ConnectionToDB.class);
 
     public Connection toConnect() throws TaxiException {

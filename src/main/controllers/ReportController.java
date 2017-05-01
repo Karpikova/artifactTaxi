@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/report")
 public class ReportController {
 
-    private static final org.apache.log4j.Logger logger = Logger.getLogger(MainController.class);
+    private static final org.apache.log4j.Logger logger = Logger.getLogger(ReportController.class);
     @Autowired
     private TripServiceInterface tripServiceInterface;// = new TripServiceImplementation();
 
