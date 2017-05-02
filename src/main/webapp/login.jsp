@@ -13,11 +13,11 @@
     <title>Login</title>
 </head>
 <c:if test="${success == true}"> Success! You can log in right now! </c:if>
-<form method="post">
+<form method="post" action="/taxi/j_spring_security_check">
     Login:
-        <input type="text" name="login">
+        <input type="text" name="j_username">
     Password:
-        <input type="text" name="password">
+        <input type="text" name="j_password">
     <input type="submit" name="login_button" value="Log in">
 </form>
 

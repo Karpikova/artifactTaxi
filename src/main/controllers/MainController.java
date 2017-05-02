@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class MainController {
     private PassengerServiceInterface passengerService;// = new PassengerServiceImplementation();
     private static AuthenticationManager am = new TaxiAuthenticationManager();
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/main", method = RequestMethod.GET)
     public ModelAndView sayHello(@RequestParam(value = "fullName", required = false) String fullName,
                            @RequestParam(value = "loginNew", required = false) String loginNew,
                            @RequestParam(value = "passwordNew", required = false) String passwordNew,
@@ -93,9 +94,10 @@ public class MainController {
         return mav;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/main", method = RequestMethod.POST)
     public ModelAndView login(@RequestParam(value = "login", required = true) String login,
-                              @RequestParam(value = "password", required = true) String password) {
+                              @RequestParam(value = "password", required = true) String password,
+                              HttpServletRequest req) {
 
         ModelAndView mav = new ModelAndView();
         UserRole userRole = null;
@@ -125,17 +127,17 @@ public class MainController {
         logger.info(mav.getViewName());
         mav.addObject("loginSession", login);
 
-        try {
-            Authentication request = new UsernamePasswordAuthenticationToken(login, password);
-            Authentication result = am.authenticate(request);
-            SecurityContextHolder.getContext().setAuthentication(result);
-            logger.info("555555555555555"+SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        } catch(AuthenticationException e) {
-            logger.error(e);
-            mav.getModelMap().addAttribute("message", e.getMessage());
-            mav.setViewName("redirect:error");
-            return mav;
-        }
+//        try {
+//            Authentication request = new UsernamePasswordAuthenticationToken(login, password);
+//            Authentication result = am.authenticate(request);
+//            SecurityContextHolder.getContext().setAuthentication(result);
+//            logger.info("555555555555555"+SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//        } catch(AuthenticationException e) {
+//            logger.error(e);
+//            mav.getModelMap().addAttribute("message", e.getMessage());
+//            mav.setViewName("redirect:error");
+//            return mav;
+//        }
 
         return mav;
     }

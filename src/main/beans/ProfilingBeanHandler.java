@@ -39,21 +39,21 @@ public class ProfilingBeanHandler implements BeanPostProcessor{
     }
 
     public Object postProcessAfterInitialization(final Object bean, String beanName) throws BeansException {
-        System.out.println("qw");
-        Class beanClass = map.get(beanName);
-        if (beanClass != null){
-            return Proxy.newProxyInstance(beanClass.getClassLoader(),
-                    beanClass.getInterfaces(),
-                    new InvocationHandler() {
-                        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                            long before = System.nanoTime();
-                            Object ob = method.invoke(bean, args); //why bean&&&
-                            long after = System.nanoTime();
-                            System.out.println(after-before);
-                            return ob;
-                        }
-                    });
-        }
+//        System.out.println("qw");
+//        Class beanClass = map.get(beanName);
+//        if (beanClass != null){
+//            return Proxy.newProxyInstance(beanClass.getClassLoader(),
+//                    beanClass.getInterfaces(),
+//                    new InvocationHandler() {
+//                        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//                            long before = System.nanoTime();
+//                            Object ob = method.invoke(bean, args); //why bean&&&
+//                            long after = System.nanoTime();
+//                            System.out.println(after-before);
+//                            return ob;
+//                        }
+//                    });
+//        }
         return bean;
     }
 }

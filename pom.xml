@@ -92,20 +92,28 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>4.2.2.RELEASE</version>
+      <version>3.2.10.RELEASE</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-      <version>4.2.2.RELEASE</version>
+      <version>3.2.10.RELEASE</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>4.2.2.RELEASE</version>
+      <version>3.2.10.RELEASE</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>4.3.8.RELEASE</version>
+    </dependency>
+
+
   </dependencies>
   <build>
     <finalName>artifactTaxi</finalName>
