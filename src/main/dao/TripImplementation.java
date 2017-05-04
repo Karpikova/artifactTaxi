@@ -102,10 +102,11 @@ public class TripImplementation implements TripInterface {
         return readList(qtext);
     }
 
-    public List<Trip> readListExStatus(long passenger_pkey, Status status) throws TaxiException {
+    public List<Trip> readHistoryListOfPassenger(long passenger_pkey) throws TaxiException {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
                 "passenger_pkey = " + passenger_pkey + "" +
-                " AND status <> '" + status.value() + "'" +
+                " AND status <> 'Created'" +
+                " AND status <> 'Appointed'" +
                 " ORDER BY date_start, trips_pkey";
         return readList(qtext);
     }

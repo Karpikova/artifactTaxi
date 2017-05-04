@@ -14,6 +14,11 @@ import javax.enterprise.inject.Model;
 @Controller
 public class ErrorController {
 
+    /**
+     * Error page
+     * @param message
+     * @return
+     */
     @RequestMapping(value = "/error", method = RequestMethod.GET)
     public ModelAndView sayError(@RequestParam(value = "message", required = false) String message) {
         ModelAndView mav = new ModelAndView();

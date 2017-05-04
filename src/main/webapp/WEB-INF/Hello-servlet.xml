@@ -17,5 +17,4 @@
         <beans:property name="suffix" value=".jsp"></beans:property>
     </beans:bean>
 
-
 </beans:beans>

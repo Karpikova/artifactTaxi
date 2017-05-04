@@ -92,13 +92,13 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>3.2.10.RELEASE</version>
+      <version>4.2.2.RELEASE</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-      <version>3.2.10.RELEASE</version>
+      <version>4.2.2.RELEASE</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
     <dependency>

@@ -38,7 +38,7 @@ public interface TripServiceInterface {
      * @param passenger_pkey
      * @return
      */
-    public List<Trip> readListExStatus(long passenger_pkey, Status status) throws TaxiException;
+    public List<Trip> readHistoryListOfPassenger(long passenger_pkey) throws TaxiException;
 
     /**
      * Create a trip

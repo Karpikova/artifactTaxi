@@ -13,6 +13,7 @@
     <title>Login</title>
 </head>
 <c:if test="${success == true}"> Success! You can log in right now! </c:if>
+<c:if test="${authError == true}"> Wrong name or/and password, try again. </c:if>
 <form method="post" action="/taxi/j_spring_security_check">
     Login:
         <input type="text" name="j_username">
@@ -22,8 +23,8 @@
 </form>
 
 <c:if test="${success != true}">
-    <a href="${pageContext.request.contextPath}?toAuth=1">First time here, want to enjoy as a passenger</a><br>
-    <a href="${pageContext.request.contextPath}?toAuth=2">First time here, want to enjoy as a driver</a><br><br><br>
+    <a href="${pageContext.request.contextPath}/login?toAuth=1">First time here, want to enjoy as a passenger</a><br>
+    <a href="${pageContext.request.contextPath}/login?toAuth=2">First time here, want to enjoy as a driver</a><br><br><br>
 </c:if>
 <form method="get">
     <c:if test="${param.toAuth != null}">

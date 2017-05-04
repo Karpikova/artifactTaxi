@@ -8,6 +8,8 @@ import main.services.TripServiceInterface;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +25,6 @@ import java.util.List;
  * Controller for passenger page
  */
 @Controller
-@SessionAttributes("loginSession")
 public class PassengerController {
 
     private static final org.apache.log4j.Logger logger = Logger.getLogger(PassengerController.class);
@@ -33,21 +34,26 @@ public class PassengerController {
     @Autowired
     private PassengerServiceInterface passegerServiceInterface;//= new PassengerServiceImplementation();
 
+    /**
+     * The firts passenger page handler
+     * @param logout
+     * @param trips_pkey
+     * @param trips_pkey_to_delete
+     * @return
+     */
     @RequestMapping(value = "/passenger", method = RequestMethod.GET)
-    public ModelAndView sayWelcomePassenger(@ModelAttribute("loginSession") String loginSession,
-                                            @RequestParam(value = "logout", required = false) String logout,
+    public ModelAndView sayWelcomePassenger(@RequestParam(value = "logout", required = false) String logout,
                                             @RequestParam(value = "trips_pkey", required = false) String trips_pkey,
                                             @RequestParam(value = "trips_pkey_to_delete", required = false) String trips_pkey_to_delete) {
         ModelAndView mav = new ModelAndView();
+        String login = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 
         if (logout != null) {
-            mav.addObject("loginSession", "");
             mav.setViewName("redirect:/");
             return mav;
         }
         try {
-            mav = openPage(mav, loginSession, trips_pkey, trips_pkey_to_delete);
-            logger.info(mav.getViewName());
+            mav = openPage(mav, trips_pkey, trips_pkey_to_delete);
         } catch (Exception e) {
             mav.getModelMap().addAttribute("message", e.getMessage());
             mav.setViewName("redirect:error");
@@ -56,7 +62,16 @@ public class PassengerController {
         return mav;
     }
 
-    private ModelAndView openPage(ModelAndView mav, String loginSession, String trips_pkey, String trips_pkey_to_delete) throws IOException, ServletException {
+    /**
+     * Open passenger page handler
+     * @param mav
+     * @param trips_pkey
+     * @param trips_pkey_to_delete
+     * @return
+     * @throws IOException
+     * @throws ServletException
+     */
+    private ModelAndView openPage(ModelAndView mav, String trips_pkey, String trips_pkey_to_delete) throws IOException, ServletException {
         try {
             if (trips_pkey != null) {
                 mav.getModelMap().addAttribute("trips_pkey", trips_pkey);
@@ -67,7 +82,8 @@ public class PassengerController {
                 long pkey = Long.parseLong(trips_pkey_to_delete);
                 tripServiceInterface.updateStatus(pkey, Status.Cancelled);
             }
-            long passenger_id = passegerServiceInterface.read(loginSession).getUsersPkey().getUsersPkey();
+            String login = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+            long passenger_id = passegerServiceInterface.read(login).getUsersPkey().getUsersPkey();
             getCurrentOrders(mav, passenger_id);
             getHistoricalOrders(mav, passenger_id);
         } catch (TaxiException e) {
@@ -79,21 +95,46 @@ public class PassengerController {
         return mav;
     }
 
+    /**
+     * Gets current passenger's orders
+     * @param mav
+     * @param passenger_id
+     * @throws ServletException
+     * @throws IOException
+     * @throws TaxiException
+     */
     private void getCurrentOrders(ModelAndView mav, long passenger_id) throws ServletException, IOException, TaxiException {
         List<Trip> currentTrips;
         currentTrips = tripServiceInterface.readList(passenger_id, Status.Created);
+        currentTrips.addAll(tripServiceInterface.readList(passenger_id, Status.Appointed));
         mav.addObject("currentTrips", currentTrips);
     }
 
+    /**
+     * Gets historical passenger's orders
+     * @param mav
+     * @param passenger_id
+     * @throws ServletException
+     * @throws IOException
+     * @throws TaxiException
+     */
     private void getHistoricalOrders(ModelAndView mav, long passenger_id) throws ServletException, IOException, TaxiException {
         List<Trip> historicalTrips;
-        historicalTrips = tripServiceInterface.readListExStatus(passenger_id, Status.Created);
+        historicalTrips = tripServiceInterface.readHistoryListOfPassenger(passenger_id);
         mav.addObject("historicalTrips", historicalTrips);
     }
 
-    @RequestMapping(method = RequestMethod.POST) //ТУТ Я ВООБЩЕ НИЧЕГО НЕ НАПИСАЛА И НОРМ! Работает!
-    public ModelAndView sendReport(@ModelAttribute("loginSession") String loginSession,
-                                   @RequestParam(value = "message", required = false) String message,
+    /**
+     * Sends passenger's respond about executed trip
+     * @param message
+     * @param from
+     * @param to
+     * @param price_string
+     * @param trips_pkey
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView sendReport(@RequestParam(value = "message", required = false) String message,
                                    @RequestParam(value = "from", required = false) String from,
                                    @RequestParam(value = "to", required = false) String to,
                                    @RequestParam(value = "price", required = false) String price_string,
@@ -105,11 +146,12 @@ public class PassengerController {
                 tripServiceInterface.updateReport(Long.valueOf(trips_pkey), message);
                 return mav;
             }
+            String login = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             if (from!=null) {
                 int price = Integer.parseInt(price_string);
-                long passenger_id = passegerServiceInterface.read(loginSession).getUsersPkey().getUsersPkey();
+                long passenger_id = passegerServiceInterface.read(login).getUsersPkey().getUsersPkey();
                 tripServiceInterface.createABrandNew(passenger_id, from, to, price);
-                openPage(mav, loginSession, null, null);
+                openPage(mav, null, null);
             }
         } catch (Exception e) {
             mav.getModelMap().addAttribute("message", e.getMessage());

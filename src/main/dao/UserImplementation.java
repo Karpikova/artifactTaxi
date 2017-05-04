@@ -35,7 +35,7 @@ public class UserImplementation implements UserInterface {
 
     public void create(User user) throws TaxiException {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        String qText = "INSERT INTO public.\"User\"(\n" +
+        String qText = "INSERT INTO public.\"users\"(\n" +
                 "  users_pkey, login, users_password, last_login, registration_date)\n" +
                 "  VALUES (" +
                 user.getUsersPkey() +", " +
@@ -53,9 +53,9 @@ public class UserImplementation implements UserInterface {
             Connection connection = connectionToDB.toConnect();
             String qTextEx = "SELECT * " +
                     " FROM " +
-                    "  public.\"User\"" +
+                    "  public.\"users\"" +
                     "WHERE \n" +
-                    "  \"User\".login = '" + user.getLogin() + "' LIMIT 1;";
+                    "  \"users\".login = '" + user.getLogin() + "' LIMIT 1;";
             Statement st = connection.createStatement();
             ResultSet resultSet = st.executeQuery(qTextEx);
             if (resultSet.next()) {
@@ -65,7 +65,7 @@ public class UserImplementation implements UserInterface {
 
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
             Date curDate = new Date();
-            String qText = "INSERT INTO public.\"User\"(\n" +
+            String qText = "INSERT INTO public.\"users\"(\n" +
                     "  login, users_password, last_login, registration_date)\n" +
                     "  VALUES (" +
                     "'" + user.getLogin() + "', " +
@@ -98,10 +98,10 @@ public class UserImplementation implements UserInterface {
             Statement st = connection.createStatement();
             String qText = "SELECT * \n" +
                     "FROM \n" +
-                    "  public.\"User\"\n" +
+                    "  public.\"users\"\n" +
                     "WHERE \n" +
-                    "  \"User\".login = '" + login + "' AND \n" +
-                    "  \"User\".users_password = " + Integer.toString(userPassword) + " LIMIT 1;";
+                    "  \"users\".login = '" + login + "' AND \n" +
+                    "  \"users\".users_password = " + Integer.toString(userPassword) + " LIMIT 1;";
             ResultSet resultSet = st.executeQuery(qText);
             if (resultSet.next()) {
                 user = new User(

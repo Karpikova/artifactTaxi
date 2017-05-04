@@ -5,6 +5,8 @@ import main.services.TripServiceInterface;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
  * Controller for report page
  */
 @Controller
-@SessionAttributes("loginSession")
 @RequestMapping("/report")
 public class ReportController {
 
@@ -23,20 +24,29 @@ public class ReportController {
     @Autowired
     private TripServiceInterface tripServiceInterface;// = new TripServiceImplementation();
 
+    /**
+     * To open report page
+     * @param trips_pkey
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView sayReport(@ModelAttribute("loginSession") String loginSession,
-                                  @RequestParam(value = "trips_pkey", required = false) String trips_pkey){
+    public ModelAndView sayReport(@RequestParam(value = "trips_pkey", required = false) String trips_pkey){
         ModelAndView mav = new ModelAndView();
         mav.addObject("trips_pkey", trips_pkey);
         mav.setViewName("report");
         return mav;
     }
 
+    /**
+     * Sends passenger's report about executed trip
+     * @param message
+     * @param trips_pkey
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST) //ВМЕСТО ЭТОГО ИДЕТ В POST passenger'a! прописано в jsp
-    public ModelAndView sendReport(@ModelAttribute("loginSession") String loginSession,
-                                    @RequestParam(value = "message", required = false) String message,
+    public ModelAndView sendReport(@RequestParam(value = "message", required = false) String message,
                                     @RequestParam(value = "trips_pkey", required = false) String trips_pkey){
-
+        String login = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:passenger");
         try {

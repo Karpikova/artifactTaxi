@@ -5,14 +5,6 @@
          version="2.4">
   <display-name>Archetype Created Web Application</display-name>
 
-  <!--<servlet>-->
-    <!--<servlet-name>Main</servlet-name>-->
-    <!--<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>-->
-  <!--</servlet>-->
-  <!--<servlet-mapping>-->
-    <!--<servlet-name>Main</servlet-name>-->
-    <!--<url-pattern>/</url-pattern>-->
-  <!--</servlet-mapping>-->
 
   <servlet>
   <servlet-name>Hello</servlet-name>
@@ -24,23 +16,10 @@
   </servlet-mapping>
 
 
-  <!--<filter>-->
-    <!--<filter-name>GenFB</filter-name>-->
-    <!--<filter-class>main.controllers.filtres.GenFB</filter-class>-->
-  <!--</filter>-->
-  <!---->
-  <!--<filter-mapping>-->
-    <!--<filter-name>GenFB</filter-name>-->
-    <!--<url-pattern>/passenger</url-pattern>-->
-  <!--</filter-mapping>-->
-  <!--<filter-mapping>-->
-    <!--<filter-name>GenFB</filter-name>-->
-    <!--<url-pattern>/driver</url-pattern>-->
-  <!--</filter-mapping>-->
-
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>WEB-INF/Hello-servlet.xml WEB-INF/securityContext.xml WEB-INF/spring-database.xml</param-value>
@@ -52,8 +31,6 @@
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy
     </filter-class>
   </filter>
-
-
 
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>

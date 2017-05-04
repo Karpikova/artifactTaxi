@@ -42,7 +42,7 @@ public class PassengerImplementation implements PassengerInterface{
             ConnectionToDB connectionToDB = new ConnectionToDB();
             Connection connection = connectionToDB.toConnect();
             Statement st = connection.createStatement();
-            String qtext = "SELECT * FROM PUBLIC.\"Passenger\" Ps LEFT JOIN PUBLIC.\"User\" Us\n" +
+            String qtext = "SELECT * FROM PUBLIC.\"Passenger\" Ps LEFT JOIN PUBLIC.\"users\" Us\n" +
                     "ON Us.users_pkey = Ps.users_pkey_pas\n" +
                     "WHERE Us.login = '"+ login +"' LIMIT 1";
             ResultSet resultSet = st.executeQuery(qtext);

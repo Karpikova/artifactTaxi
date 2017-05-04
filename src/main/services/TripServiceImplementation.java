@@ -33,8 +33,8 @@ public class TripServiceImplementation implements TripServiceInterface{
         return tripInterface.readList(passenger_pkey, status);
     }
 
-    public List<Trip> readListExStatus(long passenger_pkey, Status status) throws TaxiException {
-        return tripInterface.readListExStatus(passenger_pkey, status);
+    public List<Trip> readHistoryListOfPassenger(long passenger_pkey) throws TaxiException {
+        return tripInterface.readHistoryListOfPassenger(passenger_pkey);
     }
 
     public void create(Trip trip) throws TaxiException {

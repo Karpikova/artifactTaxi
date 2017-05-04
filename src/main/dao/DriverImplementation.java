@@ -45,7 +45,7 @@ public class DriverImplementation implements DriverInterface {
             ConnectionToDB connectionToDB = new ConnectionToDB();
             Connection connection = connectionToDB.toConnect();
             Statement st = connection.createStatement();
-            String qtext = "SELECT * FROM PUBLIC.\"Driver\" Dr LEFT JOIN PUBLIC.\"User\" Us\n" +
+            String qtext = "SELECT * FROM PUBLIC.\"Driver\" Dr LEFT JOIN PUBLIC.\"users\" Us\n" +
                     "ON Us.users_pkey = Dr.users_pkey_driver\n" +
                     "WHERE Us.login = '"+ login +"' LIMIT 1";
             ResultSet resultSet = st.executeQuery(qtext);

@@ -10,7 +10,7 @@ import javax.servlet.ServletContextListener;
  */
 public class Listner implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        PropertyConfigurator.configure(MainController.class.getClassLoader()
+        PropertyConfigurator.configure(Hello.class.getClassLoader()
                 .getResource("log4j.properties"));
     }
 

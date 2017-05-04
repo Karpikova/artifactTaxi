@@ -34,6 +34,7 @@
         <th>Order number</th>
         <th>AddressFrom</th>
         <th>AddressTo</th>
+        <th>Status</th>
         <th>Price</th>
         <th></th>
     </tr>
@@ -44,6 +45,7 @@
             <td><c:out value="${trip.trips_pkey}"></c:out></td>
             <td><c:out value="${trip.addressFrom}"></c:out></td>
             <td><c:out value="${trip.addressTo}"></c:out></td>
+            <td><c:out value="${trip.status}"></c:out></td>
             <td><c:out value="${trip.price}"></c:out></td>
             <td><a href="${pageContext.request.contextPath}/passenger?trips_pkey_to_delete=${trip.trips_pkey}">Change my mind</a></td>
         </tr>
@@ -77,6 +79,6 @@
     </c:forEach>
     </tbody>
 </table>
-<a href="${pageContext.request.contextPath}/passenger?logout=1">Log out</a>
+<a href="<c:url value="/j_spring_security_logout"/>">Logout!</a>
 </body>
 </html>
