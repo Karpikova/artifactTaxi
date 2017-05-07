@@ -14,6 +14,7 @@
 </head>
 <c:if test="${success == true}"> Success! You can log in right now! </c:if>
 <c:if test="${authError == true}"> Wrong name or/and password, try again. </c:if>
+<c:if test="${doubleUser == true}"> Login is not free, sorry. </c:if>
 <form method="post" action="/taxi/j_spring_security_check">
     Login:
         <input type="text" name="j_username">

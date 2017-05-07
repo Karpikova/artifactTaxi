@@ -7,18 +7,19 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
+import java.util.concurrent.ExecutionException;
+
 /*
  * Driver Service Interface Implementation
  */
 @Repository
 public class DriverServiceImplementation implements DriverServiceInterface {
 
-    private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverServiceImplementation.class);
-
     @Autowired
-    private DriverInterface driverInterface;// = new DriverImplementation();
+    private DriverInterface driverInterface;
 
-    public Driver getDriver(String login) throws TaxiException {
+    public Driver getDriver(String login) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         return driverInterface.read(login);
     };
 
@@ -27,11 +28,11 @@ public class DriverServiceImplementation implements DriverServiceInterface {
      * @param login
      * @return Driver
      */
-    public Driver read(String login) throws TaxiException {
+    public Driver read(String login) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         return driverInterface.read(login);
     }
 
-    public void create(Driver driver) throws TaxiException {
+    public void create(Driver driver) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         driverInterface.create(driver);
     }
 }

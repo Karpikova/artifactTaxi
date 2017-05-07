@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Controller for driver
@@ -24,12 +26,10 @@ import java.util.List;
 @Controller
 public class DriverController {
 
-    private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverController.class);
-
     @Autowired
-    private TripServiceInterface tripServiceInterface;// = new TripServiceImplementation();
+    private TripServiceInterface tripServiceInterface;
     @Autowired
-    private DriverServiceInterface driverServiceInterface;// = new DriverServiceImplementation();
+    private DriverServiceInterface driverServiceInterface;
 
     /**
      * Welcome driver handler
@@ -41,7 +41,7 @@ public class DriverController {
     @RequestMapping(value = "/driver", method = RequestMethod.GET)
     public ModelAndView sayWelcomeDriver(@RequestParam(value = "logout", required = false) String logout,
                                          @RequestParam(value = "trips_pkey_takeIn", required = false) String trips_pkey_takeIn,
-                                         @RequestParam(value = "trips_pkey_done", required = false) String trips_pkey_done) {
+                                         @RequestParam(value = "trips_pkey_done", required = false) String trips_pkey_done) throws TaxiException, ServletException, IOException, InterruptedException, ExecutionException, SQLException {
         ModelAndView mav = new ModelAndView();
         if (logout!=null){
             mav.addObject("loginSession", "");
@@ -49,24 +49,17 @@ public class DriverController {
             return mav;
         }
         String login = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        try {
-            mav.setViewName("driver");
-            long driver_id = driverServiceInterface.read(login).getUsersPkey().getUsersPkey();
-            if (trips_pkey_takeIn != null)
-            {
-                tripServiceInterface.appointADriver(Integer.valueOf(trips_pkey_takeIn), driver_id, Status.Appointed);
-            }
-            if (trips_pkey_done != null)
-            {
-                tripServiceInterface.updateStatus(Integer.valueOf(trips_pkey_done), Status.Excecuted);
-            }
-            getMyOrders(mav, driver_id);
-            getAllNewOrders(mav);
-        } catch (Exception e) {
-            mav.getModelMap().addAttribute("message", e.getMessage());
-            mav.setViewName("redirect:error");
-            return mav;
+
+        mav.setViewName("driver");
+        long driver_id = driverServiceInterface.read(login).getUsersPkey().getUsersPkey();
+        if (trips_pkey_takeIn != null) {
+            tripServiceInterface.appointADriver(Integer.valueOf(trips_pkey_takeIn), driver_id, Status.Appointed);
         }
+        if (trips_pkey_done != null) {
+            tripServiceInterface.updateStatus(Integer.valueOf(trips_pkey_done), Status.Excecuted);
+        }
+        getMyOrders(mav, driver_id);
+        getAllNewOrders(mav);
 
         return mav;
     }
@@ -79,7 +72,7 @@ public class DriverController {
      * @throws IOException
      * @throws TaxiException
      */
-    private void getMyOrders(ModelAndView mav, long driver_id) throws ServletException, IOException, TaxiException {
+    private void getMyOrders(ModelAndView mav, long driver_id) throws ServletException, IOException, TaxiException, InterruptedException, ExecutionException, SQLException {
         List<Trip> myTrips;
         myTrips = tripServiceInterface.readList(driver_id);
         mav.addObject("myTrips", myTrips);
@@ -92,7 +85,7 @@ public class DriverController {
      * @throws IOException
      * @throws TaxiException
      */
-    private void getAllNewOrders(ModelAndView mav) throws ServletException, IOException, TaxiException {
+    private void getAllNewOrders(ModelAndView mav) throws ServletException, IOException, TaxiException, InterruptedException, ExecutionException, SQLException {
         List<Trip> allTrips;
         allTrips = tripServiceInterface.readList(Status.Created);
         mav.addObject("allTrips", allTrips);

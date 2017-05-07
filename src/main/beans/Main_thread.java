@@ -10,10 +10,14 @@ package main.beans;
  * Karpikova
  */
 public class Main_thread {
-    public static volatile int i;
+    public volatile int i;
     public static volatile int k;
 
-    public static void main(String[] args) {
+
+    /*public static void main(String[] args) {
+        int i = 7;
+        i = -+(10 + 2 + i);   //2
+        --i++;
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 int val = i;
@@ -30,6 +34,6 @@ public class Main_thread {
         });
         thread.start();
         thread2.start();
-    }
+    }*/
 
 }

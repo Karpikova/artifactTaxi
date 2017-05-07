@@ -1,6 +1,6 @@
 package main.dao;
 
-import main.ConnectionToDB;
+import main.DB.ConnectionToDB;
 import main.Exception.TaxiException;
 import main.pojo.*;
 import org.apache.log4j.Logger;
@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /*
  * Implementation of UserInterface for postgressql DB
@@ -23,7 +24,7 @@ public class TripImplementation implements TripInterface {
 
     private static final org.apache.log4j.Logger logger = Logger.getLogger(TripImplementation.class);
 
-    public  void create(Trip trip) throws TaxiException {
+    public  void create(Trip trip) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         String qtext = "INSERT INTO public.\"Trip\"(" +
                 "trips_pkey, driver_pkey, passenger_pkey, address_from, address_to, date_start, " +
@@ -43,7 +44,7 @@ public class TripImplementation implements TripInterface {
         ConnectionToDB.execute(qtext);
     }
 
-    public void createABrandNew(long passenger_id, String from, String to, int price) throws TaxiException {
+    public void createABrandNew(long passenger_id, String from, String to, int price) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         Date curDate = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         String qtext = "INSERT INTO public.\"Trip\"(" +
@@ -82,19 +83,19 @@ public class TripImplementation implements TripInterface {
         return null;
     }
 
-    public List<Trip> readList(Status status) throws TaxiException {
+    public List<Trip> readList(Status status) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
                 "status = '" + status.value() + "' ORDER BY date_start, trips_pkey";
         return readList(qtext);
     }
 
-    public List<Trip> readList(long driver_pkey) throws TaxiException {
+    public List<Trip> readList(long driver_pkey) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
                 "driver_pkey = '" + driver_pkey + "' ORDER BY date_start, trips_pkey";
         return readList(qtext);
     }
 
-    public List<Trip> readList(long passenger_pkey, Status status) throws TaxiException {
+    public List<Trip> readList(long passenger_pkey, Status status) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
                 "passenger_pkey = " + passenger_pkey + "" +
                 " AND status = '" + status.value() + "'" +
@@ -102,7 +103,7 @@ public class TripImplementation implements TripInterface {
         return readList(qtext);
     }
 
-    public List<Trip> readHistoryListOfPassenger(long passenger_pkey) throws TaxiException {
+    public List<Trip> readHistoryListOfPassenger(long passenger_pkey) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         String qtext = "SELECT * FROM public.\"Trip\" WHERE " +
                 "passenger_pkey = " + passenger_pkey + "" +
                 " AND status <> 'Created'" +
@@ -111,25 +112,20 @@ public class TripImplementation implements TripInterface {
         return readList(qtext);
     }
 
-    private List<Trip> readList(String qtext) throws TaxiException {
+    private List<Trip> readList(String qtext) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         List<Trip> trips = new ArrayList<Trip>();
-        try {
-            ConnectionToDB connectionToDB = new ConnectionToDB();
-            Connection connection = connectionToDB.toConnect();
-            Statement st = connection.createStatement();
-            ResultSet resultSet = st.executeQuery(qtext);
-            while (resultSet.next()) {
-                Trip trip = createATripByResultSet(resultSet);
-                trips.add(trip);
-            }
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new TaxiException(e.getMessage());
+        ConnectionToDB connectionToDB = new ConnectionToDB();
+        Connection connection = connectionToDB.toConnect();
+        Statement st = connection.createStatement();
+        ResultSet resultSet = st.executeQuery(qtext);
+        while (resultSet.next()) {
+            Trip trip = createATripByResultSet(resultSet);
+            trips.add(trip);
         }
         return trips;
     }
 
-    public void update(Trip trip) throws TaxiException {
+    public void update(Trip trip) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         String qtext = "UPDATE public.\"Trip\"" +
                 "SET " +
@@ -147,7 +143,7 @@ public class TripImplementation implements TripInterface {
         ConnectionToDB.execute(qtext);
     }
 
-    public void updateReport(long trip_pkey, String report) throws TaxiException {
+    public void updateReport(long trip_pkey, String report) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         String qtext = "UPDATE public.\"Trip\"" +
                 "SET " +
                 " report = '" + report + "'" +
@@ -155,7 +151,7 @@ public class TripImplementation implements TripInterface {
         ConnectionToDB.execute(qtext);
     }
 
-    public void updateStatus(long trip_pkey, Status status) throws TaxiException {
+    public void updateStatus(long trip_pkey, Status status) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         String qtext = "UPDATE public.\"Trip\"" +
                 "SET " +
                 " status = '" + status.value() + "'" +
@@ -164,7 +160,7 @@ public class TripImplementation implements TripInterface {
     }
 
 
-    public void appointADriver(long trips_pkey, long users_pkey_driver, Status status) throws TaxiException {
+    public void appointADriver(long trips_pkey, long users_pkey_driver, Status status) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         String qtext = "UPDATE public.\"Trip\"" +
                 " SET " +
                 " status = '" + status.value() + "'" +
@@ -177,7 +173,7 @@ public class TripImplementation implements TripInterface {
 
     }
 
-    public void deleteByID(long trip_pkey) throws TaxiException {
+    public void deleteByID(long trip_pkey) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         String qtext = "DELETE FROM \"Trip\"" +
                 " WHERE trips_pkey = " + trip_pkey;
         ConnectionToDB.execute(qtext);

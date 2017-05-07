@@ -6,30 +6,23 @@
   http://www.springframework.org/schema/security
   http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-    <!--<beans:bean name="bcryptEncoder"-->
-                <!--class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>-->
-
+    <beans:bean name="bcryptEncoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
     <http access-denied-page="/accessDenied">
         <intercept-url pattern="/" access="ROLE_USER, ROLE_ADMIN"/>
         <form-login login-page="/login" authentication-failure-url="/login?authError=true"/>
         <logout logout-success-url="/"/>
-
-        <!--TODO-->
     </http>
 
-
-<!--public.User-->
     <authentication-manager>
         <authentication-provider>
+            <password-encoder ref="bcryptEncoder"/>
             <jdbc-user-service data-source-ref="dataSource"
            users-by-username-query=
-                "select login, password, enabled from users where login=?"
-
+                "select login, password, 1 from users where login = ?"
             authorities-by-username-query=
-                "select login, role from users where login =?"
-
-            />
+                "select login, role from users where login = ?"/>
         </authentication-provider>
     </authentication-manager>
 

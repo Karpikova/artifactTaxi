@@ -112,7 +112,10 @@
       <artifactId>spring-jdbc</artifactId>
       <version>4.3.8.RELEASE</version>
     </dependency>
-
+    <!--<dependency>-->
+      <!--<groupId>org.springframework.social</groupId>-->
+      <!--<artifactId>spring-social-facebook</artifactId>-->
+    <!--</dependency>-->
 
   </dependencies>
   <build>

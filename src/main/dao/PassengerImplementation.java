@@ -1,10 +1,9 @@
 package main.dao;
 
-import main.ConnectionToDB;
+import main.DB.ConnectionToDB;
 import main.Exception.TaxiException;
 import main.pojo.Passenger;
 import main.pojo.User;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -12,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.ExecutionException;
 
 /*
  * Implemntation of UserInterface for postgressql DB
@@ -19,9 +19,7 @@ import java.text.SimpleDateFormat;
 @Repository
 public class PassengerImplementation implements PassengerInterface{
 
-    private static final org.apache.log4j.Logger logger = Logger.getLogger(PassengerImplementation.class);
-
-    public void create(Passenger passenger) throws TaxiException {
+    public void create(Passenger passenger) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         String qText = "INSERT INTO public.\"Passenger\"" +
                 "(users_pkey_pas, full_name, birth)" +
@@ -36,25 +34,20 @@ public class PassengerImplementation implements PassengerInterface{
         return null;
     }
 
-    public Passenger read(String login) throws TaxiException {
+    public Passenger read(String login) throws Exception {
         Passenger passenger = null;
-        try {
-            ConnectionToDB connectionToDB = new ConnectionToDB();
-            Connection connection = connectionToDB.toConnect();
-            Statement st = connection.createStatement();
-            String qtext = "SELECT * FROM PUBLIC.\"Passenger\" Ps LEFT JOIN PUBLIC.\"users\" Us\n" +
-                    "ON Us.users_pkey = Ps.users_pkey_pas\n" +
-                    "WHERE Us.login = '"+ login +"' LIMIT 1";
-            ResultSet resultSet = st.executeQuery(qtext);
-            if (resultSet.next()) {
-                passenger = new Passenger();
-                User user = new User(resultSet.getLong("users_pkey_pas"), login);
-                passenger.setUsersPkey(user);
-                passenger.setFullName(resultSet.getString("full_name"));
-            }
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new TaxiException(e.getMessage());
+        ConnectionToDB connectionToDB = new ConnectionToDB();
+        Connection connection = connectionToDB.toConnect();
+        Statement st = connection.createStatement();
+        String qtext = "SELECT * FROM PUBLIC.\"Passenger\" Ps LEFT JOIN PUBLIC.\"users\" Us\n" +
+                "ON Us.users_pkey = Ps.users_pkey_pas\n" +
+                "WHERE Us.login = '" + login + "' LIMIT 1";
+        ResultSet resultSet = st.executeQuery(qtext);
+        if (resultSet.next()) {
+            passenger = new Passenger();
+            User user = new User(resultSet.getLong("users_pkey_pas"), login);
+            passenger.setUsersPkey(user);
+            passenger.setFullName(resultSet.getString("full_name"));
         }
         return passenger;
     }

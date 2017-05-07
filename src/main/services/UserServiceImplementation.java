@@ -8,6 +8,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
+
 
 /*
  * User Service Implementation
@@ -20,16 +25,16 @@ public class UserServiceImplementation implements UserServiceInterface {
     @Autowired
     private UserInterface userInterface;// = new UserImplementation();
 
-    public User auth(String login, String password) throws TaxiException {
+    public User auth(String login, String password) throws TaxiException, InterruptedException, ExecutionException, SQLException, ParseException, IOException {
         logger.info(userInterface);
-        return userInterface.read(login, password);
+        return userInterface.read(login);
     }
 
-    public User createBrandNew(User user) throws TaxiException {
+    public User createBrandNew(User user) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         return userInterface.createBrandNew(user);
     }
 
-    public UserRole getRole(String login) throws TaxiException {
+    public UserRole getRole(String login) throws Exception {
         return userInterface.getRole(login);
     }
 

@@ -3,6 +3,7 @@ package main.pojo;
 import main.Exception.TaxiException;
 import main.dao.UserImplementation;
 import main.services.UserServiceImplementation;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.BufferedReader;
@@ -21,19 +22,22 @@ public class User {
 
     protected long usersPkey;
     protected String login;
-    protected int userPassword;
+    protected String userPasswordCrypto;
     protected Date lastLogin;
     protected Date registrationDate;
+    protected static BCryptPasswordEncoder bcryptEncoder;
 
-    public User(String login, String userPassword) throws TaxiException {
-        try {
-            Date date = new SimpleDateFormat( "dd.MM.yyyy" ).parse( "28.12.2016" );
-            this.login = login;
-            this.userPassword = UserImplementation.code_pas(userPassword, date);
-            this.registrationDate = date;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    static {
+        bcryptEncoder = new BCryptPasswordEncoder();
+    }
+
+    public User(String login, String userPassword) throws TaxiException, ParseException, IOException {
+
+        Date date = new SimpleDateFormat("dd.MM.yyyy").parse("28.12.2016");
+        this.login = login;
+        this.userPasswordCrypto = bcryptEncoder.encode(userPassword);
+        this.registrationDate = date;
+
     }
 
     public User(long usersPkey) {
@@ -42,7 +46,8 @@ public class User {
 
     public User(String login, int userPassword) {
         this.login = login;
-        this.userPassword = userPassword;
+        this.userPasswordCrypto = String.valueOf(userPassword);
+
     }
 
     public User(long usersPkey, String login) {
@@ -50,10 +55,10 @@ public class User {
         this.login = login;
     }
 
-    public User(long usersPkey, String login, int userPassword, Date lastLogin, Date registrationDate) {
+    public User(long usersPkey, String login, String userPassword, Date lastLogin, Date registrationDate) {
         this.usersPkey = usersPkey;
         this.login = login;
-        this.userPassword = userPassword;
+        this.userPasswordCrypto = userPassword;
         this.lastLogin = lastLogin;
         this.registrationDate = registrationDate;
     }
@@ -96,22 +101,6 @@ public class User {
      */
     public void setLogin(String value) {
         this.login = value;
-    }
-
-    /**
-     * Gets the value of the userPassword property.
-     *
-     */
-    public int getUserPassword() {
-        return userPassword;
-    }
-
-    /**
-     * Sets the value of the userPassword property.
-     *
-     */
-    public void setUserPassword(int value) {
-        this.userPassword = value;
     }
 
     /**
@@ -162,4 +151,19 @@ public class User {
         this.registrationDate = value;
     }
 
+    /**
+     * gets coded password
+     * @return
+     */
+    public String getUserPasswordCrypto() {
+        return userPasswordCrypto;
+    }
+
+    /**
+     * sets coded password
+     * @param userPasswordCrypto
+     */
+    public void setUserPasswordCrypto(String userPasswordCrypto) {
+        this.userPasswordCrypto = userPasswordCrypto;
+    }
 }

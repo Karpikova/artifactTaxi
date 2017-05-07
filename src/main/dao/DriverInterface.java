@@ -3,6 +3,9 @@ package main.dao;
 import main.Exception.TaxiException;
 import main.pojo.Driver;
 
+import java.sql.SQLException;
+import java.util.concurrent.ExecutionException;
+
 /*
  * User Interface
  */
@@ -12,7 +15,7 @@ public interface DriverInterface {
      * Create a new driver in DB
      * @param driver
      */
-    public void create(Driver driver) throws TaxiException;
+    public void create(Driver driver) throws TaxiException, InterruptedException, ExecutionException, SQLException;
 
     /**
      * Read a driver from DB by users_pkey_driver
@@ -26,7 +29,7 @@ public interface DriverInterface {
      * @param login
      * @return Driver
      */
-    public Driver read(String login) throws TaxiException;
+    public Driver read(String login) throws TaxiException, SQLException, ExecutionException, InterruptedException;
 
     /**
      * Update a driver from DB

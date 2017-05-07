@@ -1,6 +1,6 @@
 package main.dao;
 
-import main.ConnectionToDB;
+import main.DB.ConnectionToDB;
 import main.Exception.TaxiException;
 import main.pojo.Driver;
 import main.pojo.User;
@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.ExecutionException;
 
 /*
  * Implemntation of UserInterface for postgressql DB
@@ -19,9 +20,7 @@ import java.text.SimpleDateFormat;
 @Repository
 public class DriverImplementation implements DriverInterface {
 
-    private static final org.apache.log4j.Logger logger = Logger.getLogger(DriverImplementation.class);
-
-    public void create(Driver driver) throws TaxiException {
+    public void create(Driver driver) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         String qText = "INSERT INTO public.\"Driver\"" +
                 "(users_pkey_driver, full_name, car_number, car_description, passport, birth)" +
@@ -39,25 +38,20 @@ public class DriverImplementation implements DriverInterface {
         return null;
     }
 
-    public Driver read(String login) throws TaxiException {
+    public Driver read(String login) throws TaxiException, SQLException, ExecutionException, InterruptedException {
         Driver driver = null;
-        try {
-            ConnectionToDB connectionToDB = new ConnectionToDB();
-            Connection connection = connectionToDB.toConnect();
-            Statement st = connection.createStatement();
-            String qtext = "SELECT * FROM PUBLIC.\"Driver\" Dr LEFT JOIN PUBLIC.\"users\" Us\n" +
-                    "ON Us.users_pkey = Dr.users_pkey_driver\n" +
-                    "WHERE Us.login = '"+ login +"' LIMIT 1";
-            ResultSet resultSet = st.executeQuery(qtext);
-            if (resultSet.next()) {
-                driver = new Driver();
-                User user = new User(resultSet.getLong("users_pkey_driver"), login);
-                driver.setUsersPkey(user);
-                driver.setFullName(resultSet.getString("full_name"));
-            }
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new TaxiException(e.getMessage());
+        ConnectionToDB connectionToDB = new ConnectionToDB();
+        Connection connection = connectionToDB.toConnect();
+        Statement st = connection.createStatement();
+        String qtext = "SELECT * FROM PUBLIC.\"Driver\" Dr LEFT JOIN PUBLIC.\"users\" Us\n" +
+                "ON Us.users_pkey = Dr.users_pkey_driver\n" +
+                "WHERE Us.login = '" + login + "' LIMIT 1";
+        ResultSet resultSet = st.executeQuery(qtext);
+        if (resultSet.next()) {
+            driver = new Driver();
+            User user = new User(resultSet.getLong("users_pkey_driver"), login);
+            driver.setUsersPkey(user);
+            driver.setFullName(resultSet.getString("full_name"));
         }
         return driver;
     }

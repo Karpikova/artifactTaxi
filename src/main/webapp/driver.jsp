@@ -65,13 +65,8 @@ You can take any order:</h2>
     </c:forEach>
     </tbody>
 </table>
-<%--<a href="<c:url value="/logout" />">Logout</a>--%>
 
-<%--<c:url var="logoutUrl" value="j_spring_security_logout"/>--%>
-<%--<form action="${logoutUrl}" method="post">--%>
-    <%--<input type="submit" value="Log out" />--%>
-<%--</form>--%>
+<a href="<c:url value="/j_spring_security_logout"/>">Logout!</a>
 
-    <a href="<c:url value="/j_spring_security_logout"/>">Logout!</a>
 </body>
 </html>

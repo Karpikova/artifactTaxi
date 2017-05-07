@@ -1,4 +1,4 @@
-package main;
+package main.DB;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
 
 import main.Exception.TaxiException;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
@@ -47,46 +46,31 @@ public class ConnectionToDB{
 
     private static final org.apache.log4j.Logger logger = Logger.getLogger(ConnectionToDB.class);
 
-    public Connection toConnect() throws TaxiException {
-        try {
-            Future<Connection> future = dataSource.getConnectionAsync();
-            int numb_of_try = 0;
-            while (!future.isDone() && numb_of_try < 100) {
-                numb_of_try++;
-                try {
-                    Thread.sleep(100);
-                }catch (InterruptedException x) {
-                    Thread.currentThread().interrupt();
-                }
+    public Connection toConnect() throws TaxiException, ExecutionException, InterruptedException, SQLException {
+
+        Future<Connection> future = dataSource.getConnectionAsync();
+        int numb_of_try = 0;
+        while (!future.isDone() && numb_of_try < 100) {
+            numb_of_try++;
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException x) {
+                Thread.currentThread().interrupt();
             }
-            if (!future.isDone()){
-                System.out.println("Connection is not yet available. We are sorry. Try again later.");
-                throw new SQLException();
-            }
-            connection = future.get();
-        } catch (InterruptedException e) {
-            logger.error(e);
-            throw new TaxiException(e.getMessage());
-        } catch (ExecutionException e) {
-            logger.error(e);
-            throw new TaxiException(e.getMessage());
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new TaxiException(e.getMessage());
         }
+        if (!future.isDone()) {
+            System.out.println("Connection is not yet available. We are sorry. Try again later.");
+            throw new SQLException();
+        }
+        connection = future.get();
         return connection;
     }
 
-    public static void execute(String qText) throws TaxiException {
-        try {
-            ConnectionToDB connectionToDB = new ConnectionToDB();
-            Connection connection = connectionToDB.toConnect();
-            Statement st = connection.createStatement();
-            st.execute(qText);
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new TaxiException(e.getMessage());
-        }
+    public static void execute(String qText) throws TaxiException, SQLException, ExecutionException, InterruptedException {
+        ConnectionToDB connectionToDB = new ConnectionToDB();
+        Connection connection = connectionToDB.toConnect();
+        Statement st = connection.createStatement();
+        st.execute(qText);
     }
 
 

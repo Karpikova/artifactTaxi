@@ -8,22 +8,23 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
+import java.util.concurrent.ExecutionException;
+
 /*
  * Passenger Service Implementation
  */
 @Repository
 public class PassengerServiceImplementation implements PassengerServiceInterface{
 
-    private static final org.apache.log4j.Logger logger = Logger.getLogger(PassengerServiceImplementation.class);
-
     @Autowired
-    private PassengerInterface passengerInterface;// = new PassengerImplementation();
+    private PassengerInterface passengerInterface;
 
-    public Passenger read(String login) throws TaxiException {
+    public Passenger read(String login) throws Exception {
         return passengerInterface.read(login);
     }
 
-    public void create(Passenger passenger) throws TaxiException {
+    public void create(Passenger passenger) throws TaxiException, InterruptedException, ExecutionException, SQLException {
         passengerInterface.create(passenger);
     }
 
